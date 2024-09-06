@@ -10,3 +10,7 @@ impl BNumber {
 
     pub fn unbind(&self) -> f32 { self.src }
 }
+
+pub use bnum_traits::Display;
+
+mod bnum_traits;
