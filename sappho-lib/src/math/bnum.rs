@@ -14,3 +14,4 @@ impl BNumber {
 pub use bnum_traits::Display;
 
 mod bnum_traits;
+mod bnum_math;
