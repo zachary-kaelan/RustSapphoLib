@@ -1,4 +1,5 @@
 use std::ops::{Add, Sub};
+use std::cmp::{Ordering, PartialEq, PartialOrd};
 use crate::models::bnum::BNumber;
 
 impl BNumber {
@@ -23,5 +24,17 @@ impl Sub for BNumber {
 
     fn sub(self, rhs: Self) -> Self::Output {
         BNumber::bound(self.src - rhs.src)
+    }
+}
+
+impl PartialEq for BNumber {
+    fn eq(&self, other: &Self) -> bool {
+        self.src.eq(&other.src)
+    }
+}
+
+impl PartialOrd for BNumber {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.src.partial_cmp(&other.src)
     }
 }
