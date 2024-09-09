@@ -5,11 +5,11 @@ mod personality_traits;
 use crate::models::bnum::BNumber;
 
 #[derive(Clone, Copy)]
-struct Personality {
-    bad_good: BNumber,
-    false_honest: BNumber,
-    timid_dominant: BNumber,
-    ascetic_hedonistic: BNumber
+pub struct Personality {
+    pub bad_good: BNumber,
+    pub false_honest: BNumber,
+    pub timid_dominant: BNumber,
+    pub ascetic_hedonistic: BNumber
 }
 
 // Define a macro to generate the new function
