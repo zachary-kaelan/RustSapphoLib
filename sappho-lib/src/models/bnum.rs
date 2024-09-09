@@ -1,6 +1,6 @@
 
 /// A wrapper for working with bounded numbers.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct BNumber {
     /// The bounded number.
     val: f32,
@@ -15,7 +15,7 @@ impl BNumber {
         assert!(1f32 > n && n > -1f32);
         BNumber { val: n, src: BNumber::unbind(n) }
     }
-    
+
     /// Initializes a new `BNumber` from unbounded number `n`.
     pub fn bound(n: f32) -> BNumber {
         BNumber { val: n / (crate::models::B_MULTI + n.abs()), src: n }
