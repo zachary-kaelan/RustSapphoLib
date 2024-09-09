@@ -12,7 +12,7 @@ pub struct BNumber {
 impl BNumber {
     /// Initializes a new `BNumber` from bound number `n`.
     pub fn new(n: f32) -> BNumber {
-        assert!(1f32 > n && n > -1f32);
+        assert!(((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&n));
         BNumber { val: n, src: BNumber::unbind(n) }
     }
 
@@ -23,7 +23,7 @@ impl BNumber {
 
     /// Calculates the original unbounded number from `BNumber` value `n`.
     pub fn unbind(n: f32) -> f32 {
-        assert!(1f32 > n && n > -1f32);
+        assert!(((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&n));
         n.signum() * (crate::models::B_MULTI / (1f32 - n.abs()) - crate::models::B_MULTI)
     }
 }
