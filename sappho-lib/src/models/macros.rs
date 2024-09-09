@@ -18,8 +18,8 @@ macro_rules! personality {
 
 #[cfg(test)]
 mod tests {
-    use crate::models::bnum::BNumber;
-    use crate::models::personality::Personality;
+    use crate::models::BNumber;
+    use crate::models::Personality;
 
     #[test]
     fn bnum_macro() {

@@ -1,6 +1,6 @@
 use std::ops::{Add, Sub};
 use std::cmp::{Ordering, PartialEq, PartialOrd};
-use crate::models::bnum::BNumber;
+use crate::models::BNumber;
 
 impl BNumber {
     /// Blends the bounded values of `self` and `other` based on weight `pos`.
