@@ -1,5 +1,5 @@
 use std::fmt::{Display, Formatter};
-use crate::math::bnum::BNumber;
+use crate::models::bnum::BNumber;
 
 impl Display for BNumber {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

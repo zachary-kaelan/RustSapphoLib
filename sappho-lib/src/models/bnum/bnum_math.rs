@@ -1,5 +1,5 @@
 use std::ops::{Add, Sub};
-use crate::math::bnum::BNumber;
+use crate::models::bnum::BNumber;
 
 impl BNumber {
     /// Blends the bounded values of `self` and `other` based on weight `pos`.

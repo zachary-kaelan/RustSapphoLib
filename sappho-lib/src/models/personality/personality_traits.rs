@@ -1,5 +1,5 @@
 use std::fmt;
-use crate::math::personality::Personality;
+use crate::models::personality::Personality;
 
 // Define a macro to generate the Display implementation
 macro_rules! impl_personality_display {
