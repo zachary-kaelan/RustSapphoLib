@@ -1,10 +1,11 @@
-/// Creates a `BNumber` from a bounded number, 0.0 default.
+/// Creates a `BNumber` from a bounded f32 number, 0.0 default.
 #[macro_export]
 macro_rules! bnum {
     ( $n:expr ) => ( BNumber::new($n) );
     ( ) => ( BNumber::new(0.0f32) );
 }
 
+/// Creates a `Personality` from a set of bounded f32 numbers, 0.0 default.
 #[macro_export]
 macro_rules! personality {
         ($bad_good:expr, $false_honest:expr, $timid_dominant:expr, $ascetic_hedonistic:expr) => {
