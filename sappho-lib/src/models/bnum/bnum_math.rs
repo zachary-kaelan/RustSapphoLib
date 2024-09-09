@@ -38,3 +38,25 @@ impl PartialOrd for BNumber {
         self.src.partial_cmp(&other.src)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::BNumber;
+    use crate::bnum;
+
+    #[test]
+    fn bnum_blend() {
+        let bnum1 = bnum!(0.4f32);
+        let bnum2 = bnum!(0.8f32);
+        let blended = bnum1.blend_with(bnum2, 0.5f32);
+        assert_eq!(blended.val, 0.6f32);
+    }
+
+    #[test]
+    fn bnum_add() {
+        let bnum1 = bnum!(0.5f32);
+        let bnum2 = bnum!(0.75f32);
+        let added = bnum1 + bnum2;
+        assert_eq!(added.val, 0.8f32);
+    }
+}
