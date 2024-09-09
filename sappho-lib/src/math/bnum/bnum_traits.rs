@@ -6,11 +6,3 @@ impl Display for BNumber {
         write!(f, "{}", self.val)
     }
 }
-
-impl Clone for BNumber {
-    fn clone(&self) -> Self {
-        BNumber { val: self.val, src: self.src }
-    }
-}
-
-impl Copy for BNumber {}

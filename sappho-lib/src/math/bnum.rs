@@ -1,5 +1,6 @@
 
 /// A wrapper for working with bounded numbers.
+#[derive(Clone, Copy)]
 pub struct BNumber {
     /// The bounded number.
     val: f32,
