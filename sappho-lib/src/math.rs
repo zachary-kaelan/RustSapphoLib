@@ -1,4 +1,5 @@
 pub mod bnum;
+pub mod personality;
 
 // at z/3,  val = 0.25
 // at 1z,   val = 0.5
