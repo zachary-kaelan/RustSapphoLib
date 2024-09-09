@@ -1,4 +1,5 @@
 mod models;
+mod comps;
 
 pub use crate::models::BNumber;
 pub use crate::models::Personality;
