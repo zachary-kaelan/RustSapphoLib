@@ -1,5 +1,5 @@
 use std::ops::{Add, Sub};
-use crate::models::Personality;
+use crate::Personality;
 
 // Define a macro to generate the blend_with implementation
 macro_rules! impl_personality_blend_with {

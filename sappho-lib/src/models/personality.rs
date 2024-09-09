@@ -2,7 +2,7 @@ mod personality_math;
 mod personality_traits;
 
 
-use crate::models::BNumber;
+use crate::BNumber;
 
 #[derive(Clone, Copy)]
 pub struct Personality {

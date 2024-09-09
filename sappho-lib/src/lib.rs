@@ -1,4 +1,7 @@
-pub mod models;
+mod models;
+
+pub use crate::models::BNumber;
+pub use crate::models::Personality;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right

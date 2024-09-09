@@ -1,5 +1,5 @@
 use std::fmt;
-use crate::models::personality::Personality;
+use crate::Personality;
 
 // Define a macro to generate the Display implementation
 macro_rules! impl_personality_display {
@@ -18,8 +18,8 @@ impl_personality_display!(bad_good, false_honest, timid_dominant, ascetic_hedoni
 
 #[cfg(test)]
 mod tests {
-    use crate::models::Personality;
-    use crate::models::BNumber;
+    use crate::Personality;
+    use crate::BNumber;
     use crate::personality;
 
     #[test]

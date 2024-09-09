@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter};
 use std::convert::From;
-use crate::models::BNumber;
+use crate::BNumber;
 
 impl Display for BNumber {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
