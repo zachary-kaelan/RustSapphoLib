@@ -7,7 +7,7 @@ impl BNumber {
     /// e.g. a `pos` of 0.0 returns `self` and a `pos` of 1.0 returns `other`
     pub fn blend_with(self, other: Self, pos: f32) -> Self {
         assert!((-1f32..=1f32).contains(&pos));
-        BNumber::bound(self.val * (1f32 - pos) + other.val * pos)
+        BNumber::new(self.val * (1f32 - pos) + other.val * pos)
     }
 }
 
