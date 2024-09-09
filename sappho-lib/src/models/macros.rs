@@ -14,6 +14,13 @@ macro_rules! personality {
             BNumber::new($timid_dominant),
             BNumber::new($ascetic_hedonistic))
     };
+    () => {
+        Personality::new(
+            BNumber::new(0.0f32),
+            BNumber::new(0.0f32),
+            BNumber::new(0.0f32),
+            BNumber::new(0.0f32))
+    }
 }
 
 #[cfg(test)]
