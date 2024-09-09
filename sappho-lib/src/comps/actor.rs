@@ -6,16 +6,26 @@ use crate::{Personality, BNumber, personality};
 use perception::Perception;
 
 
+/// A character in the storyworld.
 #[derive(Deserialize, Serialize)]
 pub struct Actor {
+    /// The unique identifier.
     pub id: String,
+    /// The user-facing name.
     pub display_name: String,
+    /// The personality of the actor.
     personality: Personality,
+    /// How the actor perceives the world at large.
     accordance: Perception,
+    /// How the actor perceives themselves.
     self_perceptions: Perception,
+    /// How the actor perceives others.
     perceptions: HashMap<String, Perception>,
+    /// The emotional instability of the actor.
     emotional_variance: f32,
+    /// The current emotional stage of the actor.
     emotions: Option<Personality>,
+    /// The current stage the actor is on.
     cur_stage: Option<String>
 }
 
@@ -26,10 +36,11 @@ impl Actor {
     ///
     /// * `id`: The unique id for the actor.
     /// * `display_name`: The user-facing name for the actor.
-    /// * `personality`: The personality traits of the actor.
-    /// * `accordance`: The accordance values (global perceptions) of the actor.
-    /// * `self_perceptions`: The self-perceptions of the actor.
-    /// * `perceptions`: The initial perceptions of the actor.
+    /// * `personality`: The personality traits of the actor (Optional).
+    /// * `accordance`: How the actor perceives the world at large (Optional).
+    /// * `self_perceptions`: How the actor perceives themselves (Optional).
+    /// * `perceptions`: The initial perceptions of the actor (Optional).
+    /// * `emotional_variance`: The emotional instability of the actor (Optional).
     ///
     /// returns: Actor
     ///
@@ -57,6 +68,6 @@ impl Actor {
             None => self.personality,
         }
     }
-    
-    
+
+
 }
