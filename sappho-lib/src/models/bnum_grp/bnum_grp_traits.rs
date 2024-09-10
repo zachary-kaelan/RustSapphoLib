@@ -2,7 +2,7 @@ use std::fmt;
 use std::convert::From;
 use crate::{BNumber, BnumGroup};
 use crate::consts::BNUM_GROUP_SIZE;
-use crate::value_aliases::PERSONALITY_VALUE_NAMES;
+use crate::value_aliases::PERSONALITY_VALUE_ALIASES;
 
 impl fmt::Display for BnumGroup {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -11,7 +11,7 @@ impl fmt::Display for BnumGroup {
             if i > 0 {
                 result.push_str(", ");
             }
-            result.push_str(&format!("{}: {:+.3}", PERSONALITY_VALUE_NAMES[i], self.values[i]));
+            result.push_str(&format!("{}: {:+.3}", PERSONALITY_VALUE_ALIASES[i], self.values[i]));
         }
         write!(f, "{}", result)
     }
