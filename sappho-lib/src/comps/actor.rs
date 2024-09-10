@@ -1,15 +1,22 @@
-mod perception;
+pub mod perception;
 mod actor_traits;
+mod emotiondef;
+
+pub use emotiondef::EmotionDef;
 
 use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+use std::rc::Rc;
+use serde::{self, Deserialize, Serialize};
 use crate::{BnumGroup, BNumber, bnum_grp};
 pub use perception::Perception;
-
+use crate::managers::DefDatabase;
 
 /// A character in the storyworld.
 #[derive(Deserialize, Serialize)]
 pub struct Actor {
+    #[serde(skip)]
+    def_database: Option<Rc<crate::managers::DefDatabase>>,
+
     /// The unique identifier.
     pub id: String,
     /// The user-facing name.
@@ -50,10 +57,11 @@ impl Actor {
     /// ```
     ///
     /// ```
-    pub fn new(id: &str, display_name: &str, personality: Option<BnumGroup>,
+    pub fn new(def_database: Rc<DefDatabase>, id: &str, display_name: &str, personality: Option<BnumGroup>,
                accordance: Option<Perception>, self_perceptions: Option<Perception>,
                perceptions: Option<HashMap<String, Perception>>, emotional_variance: Option<f32>) -> Self {
-        Self { id: id.to_string(), display_name: display_name.to_string(),
+        Self { def_database: Some(def_database),
+            id: id.to_string(), display_name: display_name.to_string(),
             personality: personality.unwrap_or(bnum_grp!()),
             accordance: accordance.unwrap_or(Perception::new(None)),
             self_perceptions: self_perceptions.unwrap_or(Perception::new(personality)),
