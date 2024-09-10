@@ -32,7 +32,7 @@ pub struct Actor {
     /// The emotional instability of the actor.
     emotional_variance: f32,
     /// The current emotional stage of the actor.
-    emotions: Option<BnumGroup>,
+    emotions: Option<(f32, String)>,
     /// The current stage the actor is on.
     cur_stage: Option<String>
 }
@@ -70,13 +70,16 @@ impl Actor {
             emotions: None, cur_stage: None }
     }
 
-    /// Get effective bnum_grp, with emotions taken into account.
+    /// Get effective personality, with emotions taken into account.
     pub fn get_eff_personality(&self) -> BnumGroup {
-        match self.emotions {
-            Some(e) => self.personality + e,
+        match &self.emotions {
+            Some((intensity, emotion)) => {
+                self.def_database.as_ref()
+                    .unwrap().emotion_defs.get(emotion)
+                    .unwrap().apply_to_personality(self.personality, *intensity)
+            },
             None => self.personality,
         }
     }
-
 
 }
