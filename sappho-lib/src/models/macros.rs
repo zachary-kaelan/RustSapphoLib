@@ -1,4 +1,3 @@
-use crate::{NUM_PERSONALITY_VALUES, PERSONALITY_VALUE_NAMES};
 
 /// Creates a `BNumber` from a bounded f32 number, 0.0 default.
 #[macro_export]

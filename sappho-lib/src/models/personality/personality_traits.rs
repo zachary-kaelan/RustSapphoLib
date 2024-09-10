@@ -1,6 +1,6 @@
 use std::fmt;
 use std::convert::From;
-use crate::{BNumber, Personality, PersonalityT, NUM_PERSONALITY_VALUES};
+use crate::{BNumber, Personality, NUM_PERSONALITY_VALUES};
 use crate::{PERSONALITY_VALUE_NAMES};
 
 

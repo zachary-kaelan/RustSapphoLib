@@ -2,7 +2,7 @@ mod personality_math;
 mod personality_traits;
 
 use serde::{Deserialize, Serialize};
-use crate::{BNumber, NUM_PERSONALITY_VALUES, PersonalityT};
+use crate::{PersonalityT};
 
 #[derive(Clone, Copy, Deserialize, Serialize)]
 /// Personality model.

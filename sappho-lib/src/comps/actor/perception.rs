@@ -1,7 +1,7 @@
 
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
-use crate::{Personality, BNumber, personality};
+use crate::{Personality, personality};
 
 /// An actor's perception of themselves, another actor, or the world at large.
 #[derive(Deserialize, Serialize)]
