@@ -42,6 +42,7 @@ impl Actor {
     ///
     /// # Arguments
     ///
+    /// * `def_database`: Database of component definitions.
     /// * `id`: The unique id for the actor.
     /// * `display_name`: The user-facing name for the actor.
     /// * `bnum_grp`: The bnum_grp traits of the actor (Optional).
@@ -57,11 +58,11 @@ impl Actor {
     /// ```
     ///
     /// ```
-    pub fn new(def_database: Rc<DefDatabase>, id: &str, display_name: &str, personality: Option<BnumGroup>,
+    pub fn new(def_database: Rc<DefDatabase>, id: String, display_name: String, personality: Option<BnumGroup>,
                accordance: Option<Perception>, self_perceptions: Option<Perception>,
                perceptions: Option<HashMap<String, Perception>>, emotional_variance: Option<f32>) -> Self {
         Self { def_database: Some(def_database),
-            id: id.to_string(), display_name: display_name.to_string(),
+            id, display_name,
             personality: personality.unwrap_or(bnum_grp!()),
             accordance: accordance.unwrap_or(Perception::new(None)),
             self_perceptions: self_perceptions.unwrap_or(Perception::new(personality)),
