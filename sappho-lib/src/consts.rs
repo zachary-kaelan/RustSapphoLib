@@ -5,12 +5,10 @@ pub type PersonalityT = [BNumber; BNUM_GROUP_SIZE];
 
 pub type BnumGroupT = [BNumber; BNUM_GROUP_SIZE];
 
-pub const PERSONALITY_VALUE_NAMES: [&str; BNUM_GROUP_SIZE] = ["bad_good", "faithless_honest", "timid_dominant", "ascetic_hedonistic"];
 pub const NUM_VERB_VALUES: usize = 4;
 
 pub type VerbT = [BNumber; BNUM_GROUP_SIZE];
 
-pub const VERB_VALUE_NAMES: [&str; BNUM_GROUP_SIZE] = ["selfish_altruistic", "deceptive_sincere", "submissive_dominant", "cold_emotional"];
 pub const VERB_WEIGHTS: [[f32; BNUM_GROUP_SIZE]; BNUM_GROUP_SIZE] = [
 //  s_a      d_s      s_d      c_e
     [ 0.550,  0.100,  0.000,  0.100], // bad_good

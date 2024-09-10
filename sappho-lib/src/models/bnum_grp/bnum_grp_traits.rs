@@ -1,7 +1,8 @@
 use std::fmt;
 use std::convert::From;
 use crate::{BNumber, BnumGroup};
-use crate::consts::{BNUM_GROUP_SIZE, PERSONALITY_VALUE_NAMES};
+use crate::consts::BNUM_GROUP_SIZE;
+use crate::value_aliases::PERSONALITY_VALUE_NAMES;
 
 impl fmt::Display for BnumGroup {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
