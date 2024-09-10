@@ -5,7 +5,7 @@ pub struct EmotionDef {
     pub id: String,
     pub display_name: String,
     personality_modifiers: Option<BnumGroup>,
-    personality_weights: Option<[Option<f32>; BNUM_GROUP_SIZE]>
+    personality_weights: Option<[Option<f32>; BNUM_GROUP_SIZE]>,
     perception_modifiers: Option<BnumGroup>,
     perception_weights: Option<[Option<f32>; BNUM_GROUP_SIZE]>
 }
