@@ -2,11 +2,7 @@ mod models;
 mod comps;
 
 pub use crate::models::BNumber;
-pub use crate::models::Personality;
-
-const NUM_PERSONALITY_VALUES: usize = 4;
-type PersonalityT = [BNumber; NUM_PERSONALITY_VALUES];
-const PERSONALITY_VALUE_NAMES: [&str; NUM_PERSONALITY_VALUES] = ["bad_good", "faithless_honest", "timid_dominant", "ascetic_hedonistic"];
+pub use crate::models::BnumGroup;
 
 const NUM_VERB_VALUES: usize = 4;
 type VerbT = [BNumber; crate::NUM_VERB_VALUES];
