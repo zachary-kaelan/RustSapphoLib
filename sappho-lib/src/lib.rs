@@ -3,11 +3,13 @@ mod comps;
 
 pub use crate::models::BNumber;
 pub use crate::models::Personality;
+const NUM_PERSONALITY_VALUES: usize = 4;
+type PersonalityT = [BNumber; NUM_PERSONALITY_VALUES];
+const PERSONALITY_VALUE_NAMES: [&str; NUM_PERSONALITY_VALUES] = ["bad_good", "false_honest", "timid_dominant", "ascetic_hedonistic"];
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
-
 
 #[cfg(test)]
 mod tests {

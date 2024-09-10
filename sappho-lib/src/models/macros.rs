@@ -1,3 +1,5 @@
+use crate::{NUM_PERSONALITY_VALUES, PERSONALITY_VALUE_NAMES};
+
 /// Creates a `BNumber` from a bounded f32 number, 0.0 default.
 #[macro_export]
 macro_rules! bnum {
@@ -8,25 +10,26 @@ macro_rules! bnum {
 /// Creates a `Personality` from a set of bounded f32 numbers, 0.0 default.
 #[macro_export]
 macro_rules! personality {
-        ($bad_good:expr, $false_honest:expr, $timid_dominant:expr, $ascetic_hedonistic:expr) => {
-        Personality::new(
-            BNumber::new($bad_good),
-            BNumber::new($false_honest),
-            BNumber::new($timid_dominant),
-            BNumber::new($ascetic_hedonistic))
+    ( $( $x:expr ),+ ) => {
+        Personality {
+            values: [
+                $(
+                    BNumber::new($x),
+                )*
+            ]
+        }
     };
     () => {
-        Personality::new(
-            BNumber::new(0.0f32),
-            BNumber::new(0.0f32),
-            BNumber::new(0.0f32),
-            BNumber::new(0.0f32))
-    }
+        {
+            let empty = [0.0f32; crate::NUM_PERSONALITY_VALUES];
+            Personality::from(empty)
+        }
+    };
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::BNumber;
+    use crate::{BNumber, NUM_PERSONALITY_VALUES};
     use crate::Personality;
 
     #[test]
@@ -40,9 +43,9 @@ mod tests {
     #[test]
     fn personality_macro() {
         let new_personality = personality!(0.5f32, 0.25f32, 0.75f32, 0.0f32);
-        assert_eq!(f32::from(new_personality.bad_good), 0.5f32);
-        assert_eq!(f32::from(new_personality.false_honest), 0.25f32);
-        assert_eq!(f32::from(new_personality.timid_dominant), 0.75f32);
-        assert_eq!(f32::from(new_personality.ascetic_hedonistic), 0.0f32);
+        let expected_personality: [f32; NUM_PERSONALITY_VALUES] = [0.5f32, 0.25f32, 0.75f32, 0.0f32];
+        for (value, expected) in new_personality.values.iter().zip(expected_personality) {
+            assert_eq!(f32::from(*value), expected);
+        }
     }
 }

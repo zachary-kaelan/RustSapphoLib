@@ -1,51 +1,45 @@
 use std::ops::{Add, Sub};
-use crate::Personality;
+use crate::{BNumber, Personality};
 
-// Define a macro to generate the blend_with implementation
-macro_rules! impl_personality_blend_with {
-    ($($field:ident),*) => {
-        impl Personality {
-            /// Blends the bounded values of `self` and `other` based on weight `pos`.
-            /// e.g. a `pos` of 0.0 returns `self` and a `pos` of 1.0 returns `other`
-            fn blend_with(self, other: Self, pos: f32) -> Self {
-                Self {
-                    $($field: self.$field.blend_with(other.$field, pos)),*
-                }
-            }
-        }
-    };
+
+impl Personality {
+    /// Blends the bounded values of `self` and `other` based on weight `pos`.
+    /// e.g. a `pos` of 0.0 returns `self` and a `pos` of 1.0 returns `other`
+    fn blend_with(self, other: Self, pos: f32) -> Self {
+        let new_values = self.values.iter()
+            .zip(other.values.iter())
+            .map(|(value, other_value)| { value.blend_with(*other_value, pos) })
+            .collect::<Vec<BNumber>>()
+            .try_into()
+            .expect("Incorrect Length");
+        Self { values: new_values }
+    }
 }
 
-// Define a macro to generate the Add implementation
-macro_rules! impl_personality_add {
-    ($($field:ident),*) => {
-        impl Add for Personality {
-            type Output = Self;
+impl Add for Personality {
+    type Output = Self;
 
-            fn add(self, other: Self) -> Self {
-                Self {
-                    $($field: self.$field + other.$field),*
-                }
-            }
-        }
-    };
+    fn add(self, other: Self) -> Self {
+        let new_values = self.values.iter()
+            .zip(other.values.iter())
+            .map(|(value, other_value)| { *value + *other_value })
+            .collect::<Vec<BNumber>>()
+            .try_into()
+            .expect("Incorrect Length");
+        Self { values: new_values }
+    }
 }
 
-// Define a macro to generate the Sub implementation
-macro_rules! impl_personality_sub {
-    ($($field:ident),*) => {
-        impl Sub for Personality {
-            type Output = Self;
+impl Sub for Personality {
+    type Output = Self;
 
-            fn sub(self, other: Self) -> Self {
-                Self {
-                    $($field: self.$field - other.$field),*
-                }
-            }
-        }
-    };
+    fn sub(self, other: Self) -> Self {
+        let new_values = self.values.iter()
+            .zip(other.values.iter())
+            .map(|(value, other_value)| { *value - *other_value })
+            .collect::<Vec<BNumber>>()
+            .try_into()
+            .expect("Incorrect Length");
+        Self { values: new_values }
+    }
 }
-
-impl_personality_blend_with!(bad_good, false_honest, timid_dominant, ascetic_hedonistic);
-impl_personality_add!(bad_good, false_honest, timid_dominant, ascetic_hedonistic);
-impl_personality_sub!(bad_good, false_honest, timid_dominant, ascetic_hedonistic);
