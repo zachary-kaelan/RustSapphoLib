@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub};
+use std::ops::{Add, Sub, Mul};
 use std::cmp::{Ordering, PartialEq, PartialOrd};
 use crate::BNumber;
 
@@ -36,6 +36,14 @@ impl PartialEq for BNumber {
 impl PartialOrd for BNumber {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.src.partial_cmp(&other.src)
+    }
+}
+
+impl Mul<f32> for BNumber {
+    type Output = BNumber;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Self::new(self.val * rhs)
     }
 }
 
