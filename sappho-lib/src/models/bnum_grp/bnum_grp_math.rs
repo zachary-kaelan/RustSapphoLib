@@ -1,6 +1,6 @@
 use std::ops::{Add, Mul, Sub};
 use crate::{BNumber, BnumGroup};
-
+use crate::consts::BNUM_GROUP_SIZE;
 
 impl BnumGroup {
     /// Blends the bounded values of `self` and `other` based on weight `pos`.
@@ -63,6 +63,20 @@ impl Mul<f32> for BnumGroup {
     fn mul(self, rhs: f32) -> Self::Output {
         let new_values = self.values.iter()
             .map(|value| { *value * rhs })
+            .collect::<Vec<BNumber>>()
+            .try_into()
+            .expect("Incorrect Length");
+        Self { values: new_values }
+    }
+}
+
+impl Mul<[f32; BNUM_GROUP_SIZE]> for BnumGroup {
+    type Output = BnumGroup;
+
+    fn mul(self, rhs: [f32; BNUM_GROUP_SIZE]) -> Self::Output {
+        let new_values = self.values.iter()
+            .zip(rhs.iter())
+            .map(|(value, other_value)| { *value * *other_value })
             .collect::<Vec<BNumber>>()
             .try_into()
             .expect("Incorrect Length");
