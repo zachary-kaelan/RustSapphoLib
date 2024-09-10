@@ -76,23 +76,35 @@ One's perception of another's level of Ascetic_Hedonistic, in particular when in
 
 One's perception of the world's level of Bad_Good.
 
+ - **Misanthropy**: People are generally viewed as being bad, and the world is seen as a dog-eat-dog world.
+ - **Altruism**: People are generally viewed as being kind and worth helping.
+
 ***
 
 ### Paranoia_Gullibility
 
 One's perception of the world's level of Faithless_Honest.
 
+ - **Paranoia**: People are viewed as being untrustworthy.
+ - **Gullibility**: People are viewed as being trustworthy.
+
 ***
 
-### Helplessness_Control
+### Control_Helplessness
 
 One's perception of the world's level of Timid_Dominant, particularly in relation to one's own.
+
+ - **Control**: The people in the world are viewed as being sheep and easily controlled.
+ - **Helplessness**: The people in the world are viewed as being controlling.
 
 ***
 
 ### Autsterity_Decadence
 
 One's perception of the world's level of Ascetic_Hedonistic, particularly in relation to one's own.
+
+ - **Austerity**: The world is viewed as being strict and lacking in fun.
+ - **Decadence**: The world is viewed as being over-indulgant and degenerate.
 
 ***
 
