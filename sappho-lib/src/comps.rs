@@ -1,2 +1,5 @@
-pub mod actor;
-pub mod verb;
+mod actor;
+mod verb;
+mod stage;
+
+pub use actor::{Actor, Perception, EmotionDef};
