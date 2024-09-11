@@ -7,7 +7,7 @@ pub use emotiondef::EmotionDef;
 
 use std::collections::HashMap;
 use std::rc::Rc;
-use std::sync::{Mutex, Weak};
+use std::sync::{RwLock, Weak};
 use serde::{self, Deserialize, Serialize};
 use crate::{BnumGroup, BNumber, bnum_grp};
 pub use perception::Perception;
@@ -25,7 +25,7 @@ pub struct Actor {
     /// The current stage the actor is on.
     pub cur_stage_id: Option<String>,
 
-    actor_state: Mutex<ActorState>,
+    actor_state: RwLock<ActorState>,
 
     #[serde(skip)]
     cur_stage: Option<Weak<Stage>>,
@@ -60,7 +60,7 @@ impl Actor {
 
         Self {
             id, display_name, cur_stage_id: None, cur_stage: None, initialized: true,
-            actor_state: Mutex::new(ActorState {
+            actor_state: RwLock::new(ActorState {
                 personality: personality.unwrap_or(bnum_grp!()),
                 accordance: accordance.unwrap_or(Perception::new(None)),
                 self_perceptions: self_perceptions.unwrap_or(Perception::new(personality)),

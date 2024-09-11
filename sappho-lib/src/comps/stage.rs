@@ -1,4 +1,4 @@
-use std::sync::{Arc, Mutex, Weak};
+use std::sync::{Arc, RwLock, Weak};
 use crate::comps::Actor;
 use serde::{self, Deserialize, Serialize};
 use crate::Manager;
@@ -8,9 +8,9 @@ use crate::Manager;
 pub struct Stage {
     pub id: String,
     pub display_name: String,
-    actor_names: Mutex<Vec<String>>,
+    actor_names: RwLock<Vec<String>>,
     #[serde(skip)]
-    actors: Mutex<Vec<Weak<Actor>>>,
+    actors: RwLock<Vec<Weak<Actor>>>,
     #[serde(skip)]
     initialized: bool
 }
@@ -30,29 +30,29 @@ impl Stage {
                 (actor_names, actors)
             }
         };
-        Self { id, display_name, 
-            actor_names: Mutex::new(actor_names), actors: Mutex::new(actors), 
+        Self { id, display_name,
+            actor_names: RwLock::new(actor_names), actors: RwLock::new(actors),
             initialized: true }
     }
 
     /// Add an actor to the stage.
     pub fn add_actor(&self, actor: &Arc<Actor>) {
-        self.actor_names.lock().unwrap().push(actor.id.clone());
-        self.actors.lock().unwrap().push(Arc::downgrade(actor));
+        self.actor_names.write().unwrap().push(actor.id.clone());
+        self.actors.write().unwrap().push(Arc::downgrade(actor));
     }
 
     /// Move an actor to another stage.
     pub fn move_actor_to(&self, actor_id: &String, other: &Self) {
-        let mut actor_names = self.actor_names.lock().unwrap();
+        let mut actor_names = self.actor_names.write().unwrap();
         let index = actor_names.iter().position(|x| x.eq(actor_id)).unwrap();
         actor_names.remove(index);
-        other.add_actor(&self.actors.lock().unwrap().remove(index).upgrade().unwrap())
+        other.add_actor(&self.actors.write().unwrap().remove(index).upgrade().unwrap())
     }
 
     /// Move all actors to another stage.
     pub fn move_all_actors_to(&mut self, other: &mut Self) {
-        let mut actor_names = self.actor_names.lock().unwrap();
-        let mut actors = self.actors.lock().unwrap();
+        let mut actor_names = self.actor_names.write().unwrap();
+        let mut actors = self.actors.write().unwrap();
         for _ in 0..actor_names.len() {
             other.add_actor(&actors.pop().unwrap().upgrade().unwrap())
         }
@@ -61,16 +61,16 @@ impl Stage {
 
     /// Whether an actor is on a stage.
     pub fn on_stage(&self, actor_id: &String) -> bool {
-        self.actor_names.lock().unwrap().contains(actor_id)
+        self.actor_names.read().unwrap().contains(actor_id)
     }
 
     pub fn init_stage(&mut self) -> bool {
         if self.initialized {
             return false;
         }
-        
+
         // Collect the actors to be added first
-        let actors_to_add: Vec<_> = self.actor_names.lock().unwrap().iter()
+        let actors_to_add: Vec<_> = self.actor_names.read().unwrap().iter()
             .map(|actor_name| Manager::get_actor(actor_name).upgrade().unwrap())
             .collect();
 
