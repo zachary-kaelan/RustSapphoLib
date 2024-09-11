@@ -1,7 +1,11 @@
-mod def_database;
+mod def_managers;
+mod actor_manager;
+mod stage_manager;
 
-pub use def_database::DefDatabase;
+pub struct Manager;
 
-pub struct StoryworldManager {
-    
+impl Manager {
+    pub fn init() {
+        
+    }
 }

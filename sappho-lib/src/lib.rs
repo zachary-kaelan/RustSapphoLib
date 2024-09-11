@@ -6,7 +6,7 @@ mod managers;
 
 pub use crate::models::BNumber;
 pub use crate::models::BnumGroup;
-
+pub use crate::managers::Manager;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
