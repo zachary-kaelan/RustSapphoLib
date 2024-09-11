@@ -75,10 +75,7 @@ impl Actor {
             return false;
         }
 
-        self.cur_stage = match &self.cur_stage_id {
-            None => None,
-            Some(s) => Some(Manager::get_stage(s))
-        };
+        self.cur_stage = self.cur_stage_id.as_ref().map(Manager::get_stage);
 
         self.initialized = true;
         true
