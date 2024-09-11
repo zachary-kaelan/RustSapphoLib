@@ -26,12 +26,12 @@ impl BNumber {
         assert!(((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&n));
         n.signum() * (crate::models::B_MULTI / (1f32 - n.abs()) - crate::models::B_MULTI)
     }
-    
+
     /// Returns the original, unbounded number.
     pub fn get_unbounded(&self) -> f32 {
         self.src
     }
-    
+
     /// Returns the absolute value of the bounded number.
     pub fn get_amplitude(&self) -> f32 {
         self.val.abs()
