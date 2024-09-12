@@ -69,6 +69,10 @@ impl Actor {
                 emotions: None
             })}
     }
+    
+    pub fn default(id: String, display_name: String) -> Self {
+        Self::new(id, display_name, None, None, None, None, None)
+    }
 
     pub fn init_actor(&mut self) -> bool {
         if self.initialized {
