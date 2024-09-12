@@ -83,3 +83,39 @@ impl Stage {
         true
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use std::sync::{Arc, RwLock};
+    use crate::Manager;
+    use crate::comps::{Actor, Stage};
+
+    #[test]
+    fn stage_init() {
+        let actor = Arc::new(Actor::default(String::from("actor1"), String::from("Actor 1")));
+        Manager::add_actor(&Arc::clone(&actor));
+        let mut stage1 = Stage {
+            id: String::from("stage1"), display_name: String::from("Stage 1"),
+            actor_names: RwLock::new(vec![String::from("actor1")]),
+            actors: RwLock::new(Vec::new()),
+            initialized: false };
+        stage1.init_stage();
+        assert!(stage1.on_stage(&actor.id));
+    }
+
+    #[test]
+    fn stage_move() {
+        let stage1 = Stage::new(
+            String::from("stage1"), String::from("Stage 1"), None);
+        let stage2 = Stage::new(
+            String::from("stage2"), String::from("Stage 2"), None);
+        let actor = Arc::new(Actor::default(String::from("actor1"), String::from("Actor 1")));
+        stage1.add_actor(&Arc::clone(&actor));
+        assert!(stage1.on_stage(&actor.id));
+        assert!(!stage2.on_stage(&actor.id));
+        stage1.move_actor_to(&actor.id, &stage2);
+        assert!(!stage1.on_stage(&actor.id));
+        assert!(stage2.on_stage(&actor.id));
+    }
+}
