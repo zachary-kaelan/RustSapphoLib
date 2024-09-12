@@ -11,14 +11,14 @@ pub struct BNumber {
 
 impl BNumber {
     /// Initializes a new `BNumber` from bound number `n`.
-    pub fn new(n: f32) -> BNumber {
+    pub fn new(n: f32) -> Self {
         assert!(((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&n));
-        BNumber { val: n, src: BNumber::unbind(n) }
+        Self { val: n, src: Self::unbind(n) }
     }
 
     /// Initializes a new `BNumber` from unbounded number `n`.
-    pub fn bound(n: f32) -> BNumber {
-        BNumber { val: n / (crate::models::B_MULTI + n.abs()), src: n }
+    pub fn bound(n: f32) -> Self {
+        Self { val: n / (crate::models::B_MULTI + n.abs()), src: n }
     }
 
     /// Calculates the original unbounded number from `BNumber` value `n`.

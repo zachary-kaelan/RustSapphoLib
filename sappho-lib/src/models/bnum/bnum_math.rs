@@ -7,7 +7,7 @@ impl BNumber {
     /// e.g. a `pos` of 0.0 returns `self` and a `pos` of 1.0 returns `other`
     pub fn blend_with(self, other: Self, pos: f32) -> Self {
         assert!((-1f32..=1f32).contains(&pos));
-        BNumber::new(self.val * (1f32 - pos) + other.val * pos)
+        Self::new(self.val * (1f32 - pos) + other.val * pos)
     }
 }
 
@@ -15,15 +15,15 @@ impl Add for BNumber {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
-        BNumber::bound(self.src + rhs.src)
+        Self::bound(self.src + rhs.src)
     }
 }
 
 impl Sub for BNumber {
-    type Output = BNumber;
+    type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
-        BNumber::bound(self.src - rhs.src)
+        Self::bound(self.src - rhs.src)
     }
 }
 
@@ -40,7 +40,7 @@ impl PartialOrd for BNumber {
 }
 
 impl Mul<f32> for BNumber {
-    type Output = BNumber;
+    type Output = Self;
 
     fn mul(self, rhs: f32) -> Self::Output {
         Self::new(self.val * rhs)
