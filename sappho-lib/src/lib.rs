@@ -4,8 +4,7 @@ mod consts;
 mod value_aliases;
 mod managers;
 
-pub use crate::models::BNumber;
-pub use crate::models::BnumGroup;
+pub use crate::models::{BNumber, BnumGroup, SparseBNumber, SparseBnumGroup};
 pub use crate::managers::Manager;
 
 pub fn add(left: usize, right: usize) -> usize {

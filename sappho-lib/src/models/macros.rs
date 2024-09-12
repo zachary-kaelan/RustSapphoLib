@@ -5,7 +5,7 @@ macro_rules! bnum {
     ( ) => ( BNumber::new(0.0f32) );
 }
 
-/// Creates a `Personality` from a set of bounded f32 numbers, 0.0 default.
+/// Creates a `BNumbGroup` from a set of bounded f32 numbers, 0.0 default.
 #[macro_export]
 macro_rules! bnum_grp {
     ( $( $x:expr ),+ ) => {
@@ -21,6 +21,32 @@ macro_rules! bnum_grp {
         {
             let empty = [0.0f32; crate::consts::BNUM_GROUP_SIZE];
             BnumGroup::from(empty)
+        }
+    };
+}
+
+/// Creates a `BNumber` from a bounded f32 number, 0.0 default.
+#[macro_export]
+macro_rules! sparse_bnum {
+    ( $n:expr ) => ( SparseBNumber::new(Some($n)) );
+    ( ) => ( SparseBNumber::new(None) );
+}
+
+/// Creates a `SparseBNumGroup` from a set of bounded f32 numbers, 0.0 default.
+#[macro_export]
+macro_rules! sparse_bnum_grp {
+    ( $( $x:expr ),+ ) => {
+        SparseBnumGroup {
+            values: Some([
+                $(
+                    SparseBNumber::new(if f32::is_nan($x) { None } else { Some($x) }),
+                )*
+            ])
+        }
+    };
+    () => {
+        {
+            SparseBnumGroup { values: None }
         }
     };
 }
