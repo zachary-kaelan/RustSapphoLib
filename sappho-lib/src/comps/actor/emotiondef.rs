@@ -1,4 +1,4 @@
-use crate::{BNumber, BnumGroup};
+use crate::BnumGroup;
 use crate::consts::BNUM_GROUP_SIZE;
 
 pub struct EmotionDef {

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use serde::{self, Deserialize, Serialize};
-use crate::{BnumGroup, BNumber, bnum_grp, Manager};
+use crate::{BnumGroup, Manager};
 pub use crate::comps::actor::perception::Perception;
 
 #[derive(Deserialize, Serialize)]

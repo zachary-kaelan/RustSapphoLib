@@ -6,10 +6,9 @@ mod actor_state;
 pub use emotiondef::EmotionDef;
 
 use std::collections::HashMap;
-use std::rc::Rc;
 use std::sync::{RwLock, Weak};
 use serde::{self, Deserialize, Serialize};
-use crate::{BnumGroup, BNumber, bnum_grp};
+use crate::{BnumGroup, bnum_grp};
 pub use perception::Perception;
 use crate::comps::actor::actor_state::ActorState;
 use crate::comps::Stage;
