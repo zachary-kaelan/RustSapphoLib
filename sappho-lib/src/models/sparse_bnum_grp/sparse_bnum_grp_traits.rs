@@ -69,6 +69,12 @@ impl From<[SparseBNumber; BNUM_GROUP_SIZE]> for SparseBnumGroup {
     }
 }
 
+impl From<Option<[SparseBNumber; BNUM_GROUP_SIZE]>> for SparseBnumGroup {
+    fn from(value: Option<[SparseBNumber; BNUM_GROUP_SIZE]>) -> Self {
+        Self::new(value)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::sparse_bnum_grp;
