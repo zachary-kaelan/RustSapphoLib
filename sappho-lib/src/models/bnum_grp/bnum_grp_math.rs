@@ -1,5 +1,5 @@
-use crate::consts::{SparseBnumGroupT, BNUM_GROUP_SIZE};
-use crate::{BNumber, BnumGroup, SparseBNumber, SparseBnumGroup};
+use crate::consts::BNUM_GROUP_SIZE;
+use crate::{BNumber, BnumGroup, SparseBnumGroup};
 use std::ops::{Add, Mul, Neg, Sub};
 
 impl BnumGroup {

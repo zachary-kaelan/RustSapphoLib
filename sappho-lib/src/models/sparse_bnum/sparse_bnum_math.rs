@@ -1,4 +1,4 @@
-use crate::{BNumber, SparseBNumber, SparseBnumGroup};
+use crate::SparseBNumber;
 use std::cmp::{Ordering, PartialEq, PartialOrd};
 use std::ops::{Add, Mul, Neg, Sub};
 

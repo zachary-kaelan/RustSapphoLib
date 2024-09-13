@@ -1,4 +1,4 @@
-use crate::{BNumber, SparseBNumber};
+use crate::SparseBNumber;
 use serde::de::{Error, Visitor};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::convert::From;

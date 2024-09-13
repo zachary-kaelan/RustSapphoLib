@@ -1,5 +1,5 @@
-use crate::consts::{SparseBnumGroupT, BNUM_GROUP_SIZE};
-use crate::{BNumber, BnumGroup, SparseBNumber, SparseBnumGroup};
+use crate::consts::BNUM_GROUP_SIZE;
+use crate::{SparseBNumber, SparseBnumGroup};
 use std::ops::{Add, Mul, Neg, Sub};
 
 impl SparseBnumGroup {
@@ -180,14 +180,15 @@ impl Neg for SparseBnumGroup {
         match self.values {
             None => self,
             Some(bnum_grp) => {
-                let new_values = self
-                    .values
+                let new_values = bnum_grp
                     .iter()
                     .map(|value| -*value)
                     .collect::<Vec<SparseBNumber>>()
                     .try_into()
                     .expect("Incorrect Length");
-                Self { values: new_values }
+                Self {
+                    values: Some(new_values),
+                }
             }
         }
     }
