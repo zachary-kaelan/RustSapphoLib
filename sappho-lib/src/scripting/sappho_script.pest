@@ -1,0 +1,57 @@
+//
+// Created by intellij-pest on 2024-09-13
+// sappho_script
+// Author: zach.johnson
+//
+main = _{ SOI ~ "\n"* ~ (stmt ~ "\n"+) * ~ stmt? ~ EOI }
+stmt = _{ definition | expr }
+bnum_expr = _{ expr }
+assign_expr = _{ expr | float_optional }
+param_expr = _{ expr | float }
+expr = {
+    expr_monadic
+    | expr_dyadic
+    | expr_triadic
+    | bnum
+}
+
+definition = { def_type ~ display_name }
+
+expr_monadic = { verb_monadic ~ bnum_expr }
+expr_dyadic = { bnum_expr ~ verb_dyadic ~ param_expr }
+expr_triadic = { bnum_expr ~ verb_triadic ~ float ~ bnum_expr }
+
+verb_monadic = { "+" | "-" | "|" }
+verb_dyadic = { "+" | "-" | "*" }
+verb_triadic = { "^" }
+
+def_type = { "ACTOR" | "VERB" | "EMOTION" }
+
+bnum_assign = { bnum_ident ~ "=" ~ assign_expr }
+bnum_target_assign = { bnum_type ~ bnum_ident ~ bnum_target* ~ "=" ~ assign_expr }
+bnum_type = { "a" | "p" | "c"  | "s" | "i" }
+
+actor_def = { "ACTOR" ~ ident ~ display_name ~ "{" ~ actor_def_inner ~ "}" }
+actor_def_inner = { (actor_def_inner_stmt ~ ("," ~ actor_def_inner_stmt)*)? }
+actor_def_inner_stmt = { actor_group | bnum_target_assign }
+actor_group = { actor_group_type ~ bnum_group }
+actor_group_type = { "PERSONALITY" | "SELF" | "ACCORDANCE" | perception_group_type }
+perception_group_type = { "PERCEPTION" ~ bnum_target }
+
+bnum_group = { "{" ~ (bnum_assign ~ ("," ~ bnum_assign)*)? ~ "}" }
+bnum_tuple = { "(" ~ (float_optional ~ ","){4} ~ ")" }
+
+bnum = @{ bnum_type ~ bnum_ident ~ bnum_ident* }
+bnum_ident = @{ ASCII_ALPHA_UPPER ~ (ASCII_ALPHA_LOWER)+ ~ "_" ~ ASCII_ALPHA_UPPER ~ (ASCII_ALPHA_LOWER)+ }
+bnum_target = @{ "[" ~ ident ~ "]" }
+
+float_optional = @{ "_" | float }
+float = @{ ("+" | "-")? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* }
+
+ident = @{ ASCII_ALPHA ~ (ASCII_ALPHANUMERIC | "_")* }
+display_name = @{ string }
+string = @{ "'" ~ ( "''" | (!"'" ~ ANY) )* ~ "'" }
+
+empty = _{ "{" ~ "}" }
+
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }

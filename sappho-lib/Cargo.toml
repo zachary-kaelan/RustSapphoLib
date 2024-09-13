@@ -9,3 +9,5 @@ edition = "2021"
 ron = "0.8"
 serde = { version = "1", features = ["derive"] }
 once_cell = "1.19.0"
+pest = { version = "2", features = ["const_prec_climber"] }
+pest_derive = { version = "2" }
