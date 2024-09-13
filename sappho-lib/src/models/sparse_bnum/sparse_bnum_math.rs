@@ -132,7 +132,7 @@ impl Neg for SparseBNumber {
     fn neg(self) -> Self::Output {
         SparseBNumber::new(match self.bnum {
             None => None,
-            Some(bnum) => Some(-f32::from(bnum))
+            Some(bnum) => Some(-f32::from(bnum)),
         })
     }
 }

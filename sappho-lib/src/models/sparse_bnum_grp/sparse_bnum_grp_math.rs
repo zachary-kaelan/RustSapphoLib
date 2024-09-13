@@ -178,7 +178,7 @@ impl Neg for SparseBnumGroup {
 
     fn neg(self) -> Self {
         match self.values {
-            None => { self }
+            None => self,
             Some(bnum_grp) => {
                 let new_values = self
                     .values
