@@ -1,13 +1,13 @@
 mod bnum_grp_math;
 mod bnum_grp_traits;
 
-use serde::{Deserialize, Serialize};
 use crate::consts::BnumGroupT;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Deserialize, Serialize)]
 /// Personality model.
 pub struct BnumGroup {
-    pub values: BnumGroupT
+    pub values: BnumGroupT,
 }
 
 impl BnumGroup {

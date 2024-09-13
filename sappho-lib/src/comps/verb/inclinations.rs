@@ -1,13 +1,12 @@
-use crate::BnumGroup;
 use crate::consts::*;
-
+use crate::BnumGroup;
 
 pub const PERSONALITY_VERB_WEIGHTS: [[f32; BNUM_GROUP_SIZE]; BNUM_GROUP_SIZE] = [
-//  s_a      d_s      s_d      c_e
-    [ 0.550,  0.100,  0.000,  0.100], // bad_good
-    [ 0.200,  0.750,  0.000,  0.250], // faithless_honest
-    [ 0.000,  0.000,  0.850,  0.000], // timid_dominant
-    [-0.250, -0.150,  0.150,  0.650], // ascetic_hedonistic
+    //  s_a      d_s      s_d      c_e
+    [0.550, 0.100, 0.000, 0.100],   // bad_good
+    [0.200, 0.750, 0.000, 0.250],   // faithless_honest
+    [0.000, 0.000, 0.850, 0.000],   // timid_dominant
+    [-0.250, -0.150, 0.150, 0.650], // ascetic_hedonistic
 ];
 
 /*
@@ -30,13 +29,12 @@ Rationale:
  */
 
 const ACCORDANCE_VERB_WEIGHTS: [[f32; BNUM_GROUP_SIZE]; BNUM_GROUP_SIZE] = [
-//  s_a      d_s      s_d      c_e
-    [ 0.650,  0.000,  0.000,  0.100], // misanthropy_altruism
-    [ 0.350,  0.700,  0.000,  0.900], // paranoia_gullibility
-    [ 0.000, -0.300, -1.000,  0.000], // control_helplessness
-    [ 0.000,  0.000,  0.000,  0.000], // austerity_decadence
+    //  s_a      d_s      s_d      c_e
+    [0.650, 0.000, 0.000, 0.100],   // misanthropy_altruism
+    [0.350, 0.700, 0.000, 0.900],   // paranoia_gullibility
+    [0.000, -0.300, -1.000, 0.000], // control_helplessness
+    [0.000, 0.000, 0.000, 0.000],   // austerity_decadence
 ];
-
 
 /*
 Rationale:
@@ -53,15 +51,17 @@ Rationale:
     paranoia_gullibility (primary): you're going to feel a lot more comfortable expressing yourself when you aren't paranoid.
  */
 
-
-pub fn calculate_verb_weights(personality: BnumGroup, matrix: &[[f32; BNUM_GROUP_SIZE]; BNUM_GROUP_SIZE]) -> BnumGroup {
+pub fn calculate_verb_weights(
+    personality: BnumGroup,
+    matrix: &[[f32; BNUM_GROUP_SIZE]; BNUM_GROUP_SIZE],
+) -> BnumGroup {
     let mut verb_weights = [0.0f32; BNUM_GROUP_SIZE];
-    
+
     for i in 0..BNUM_GROUP_SIZE {
         for j in 0..BNUM_GROUP_SIZE {
             verb_weights[i] += f32::from(personality.values[i]) * matrix[j][i];
         }
     }
-    
+
     BnumGroup::from(verb_weights)
 }

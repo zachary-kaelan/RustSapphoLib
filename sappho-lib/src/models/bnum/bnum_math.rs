@@ -1,6 +1,6 @@
-use std::ops::{Add, Sub, Mul};
-use std::cmp::{Ordering, PartialEq, PartialOrd};
 use crate::BNumber;
+use std::cmp::{Ordering, PartialEq, PartialOrd};
+use std::ops::{Add, Mul, Neg, Sub};
 
 impl BNumber {
     /// Blends the bounded values of `self` and `other` based on weight `pos`.
@@ -49,8 +49,8 @@ impl Mul<f32> for BNumber {
 
 #[cfg(test)]
 mod tests {
-    use crate::BNumber;
     use crate::bnum;
+    use crate::BNumber;
 
     #[test]
     fn bnum_blend() {

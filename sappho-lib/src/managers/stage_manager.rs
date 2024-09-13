@@ -1,10 +1,11 @@
-use std::collections::HashMap;
-use std::sync::{Arc, RwLock};
-use once_cell::sync::Lazy;
 use crate::comps::Stage;
 use crate::Manager;
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
+use std::sync::{Arc, RwLock};
 
-static STAGES: Lazy<RwLock<HashMap<String, Arc<Stage>>>> = Lazy::new(|| { RwLock::new(HashMap::new()) });
+static STAGES: Lazy<RwLock<HashMap<String, Arc<Stage>>>> =
+    Lazy::new(|| RwLock::new(HashMap::new()));
 
 impl Manager {
     pub fn get_stage(id: &String) -> std::sync::Weak<Stage> {

@@ -1,8 +1,12 @@
 /// Creates a `BNumber` from a bounded f32 number, 0.0 default.
 #[macro_export]
 macro_rules! bnum {
-    ( $n:expr ) => ( BNumber::new($n) );
-    ( ) => ( BNumber::new(0.0f32) );
+    ( $n:expr ) => {
+        BNumber::new($n)
+    };
+    ( ) => {
+        BNumber::new(0.0f32)
+    };
 }
 
 /// Creates a `BNumbGroup` from a set of bounded f32 numbers, 0.0 default.
@@ -28,8 +32,12 @@ macro_rules! bnum_grp {
 /// Creates a `BNumber` from a bounded f32 number, 0.0 default.
 #[macro_export]
 macro_rules! sparse_bnum {
-    ( $n:expr ) => ( SparseBNumber::new(Some($n)) );
-    ( ) => ( SparseBNumber::new(None) );
+    ( $n:expr ) => {
+        SparseBNumber::new(Some($n))
+    };
+    ( ) => {
+        SparseBNumber::new(None)
+    };
 }
 
 /// Creates a `SparseBNumGroup` from a set of bounded f32 numbers, 0.0 default.
@@ -53,9 +61,9 @@ macro_rules! sparse_bnum_grp {
 
 #[cfg(test)]
 mod tests {
+    use crate::consts::BNUM_GROUP_SIZE;
     use crate::BNumber;
     use crate::BnumGroup;
-    use crate::consts::BNUM_GROUP_SIZE;
 
     #[test]
     fn bnum_macro() {

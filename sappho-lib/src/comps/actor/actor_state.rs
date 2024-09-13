@@ -1,7 +1,7 @@
-use std::collections::HashMap;
-use serde::{self, Deserialize, Serialize};
-use crate::{BnumGroup, Manager};
 pub use crate::comps::actor::perception::Perception;
+use crate::{BnumGroup, Manager};
+use serde::{self, Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Deserialize, Serialize)]
 pub struct ActorState {
@@ -24,11 +24,9 @@ impl ActorState {
     pub fn get_eff_personality(&self) -> BnumGroup {
         match &self.emotions {
             Some((intensity, emotion)) => {
-                Manager::get_emotion_def(emotion)
-                    .apply_to_personality(self.personality, *intensity)
-            },
+                Manager::get_emotion_def(emotion).apply_to_personality(self.personality, *intensity)
+            }
             None => self.personality,
         }
     }
 }
-

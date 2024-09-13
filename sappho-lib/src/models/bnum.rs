@@ -1,4 +1,3 @@
-
 /// A wrapper for working with bounded numbers.
 #[derive(Clone, Copy, Debug)]
 pub struct BNumber {
@@ -6,19 +5,25 @@ pub struct BNumber {
     val: f32,
 
     /// The original unbounded number.
-    src: f32
+    src: f32,
 }
 
 impl BNumber {
     /// Initializes a new `BNumber` from bound number `n`.
     pub fn new(n: f32) -> Self {
         assert!(((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&n));
-        Self { val: n, src: Self::unbind(n) }
+        Self {
+            val: n,
+            src: Self::unbind(n),
+        }
     }
 
     /// Initializes a new `BNumber` from unbounded number `n`.
     pub fn bound(n: f32) -> Self {
-        Self { val: n / (crate::models::B_MULTI + n.abs()), src: n }
+        Self {
+            val: n / (crate::models::B_MULTI + n.abs()),
+            src: n,
+        }
     }
 
     /// Calculates the original unbounded number from `BNumber` value `n`.
@@ -38,5 +43,5 @@ impl BNumber {
     }
 }
 
-mod bnum_traits;
 mod bnum_math;
+mod bnum_traits;

@@ -1,8 +1,8 @@
 mod bnum;
 mod bnum_grp;
 mod macros;
-mod sparse_bnum_grp;
 mod sparse_bnum;
+mod sparse_bnum_grp;
 
 pub use bnum::BNumber;
 pub use bnum_grp::BnumGroup;

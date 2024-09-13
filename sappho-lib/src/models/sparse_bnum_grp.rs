@@ -1,13 +1,13 @@
 mod sparse_bnum_grp_math;
 mod sparse_bnum_grp_traits;
 
-use serde::{Deserialize, Serialize};
 use crate::consts::SparseBnumGroupT;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Deserialize, Serialize)]
 /// Personality model.
 pub struct SparseBnumGroup {
-    pub values: SparseBnumGroupT
+    pub values: SparseBnumGroupT,
 }
 
 impl SparseBnumGroup {

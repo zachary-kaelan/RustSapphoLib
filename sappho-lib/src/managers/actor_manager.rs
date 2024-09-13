@@ -1,17 +1,18 @@
-use std::collections::HashMap;
-use std::sync::{Arc, RwLock};
-use once_cell::sync::Lazy;
 use crate::comps::Actor;
 use crate::Manager;
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
+use std::sync::{Arc, RwLock};
 
-static ACTORS: Lazy<RwLock<HashMap<String, Arc<Actor>>>> = Lazy::new(|| { RwLock::new(HashMap::new()) });
+static ACTORS: Lazy<RwLock<HashMap<String, Arc<Actor>>>> =
+    Lazy::new(|| RwLock::new(HashMap::new()));
 
 impl Manager {
     pub fn get_actor(id: &String) -> std::sync::Weak<Actor> {
         let actors_map = ACTORS.read().unwrap();
         Arc::downgrade(&Arc::clone(actors_map.get(id).unwrap()))
     }
-    
+
     pub fn add_actor(actor: &Arc<Actor>) {
         let mut actors = ACTORS.write().unwrap();
         actors.insert(actor.id.clone(), Arc::clone(actor));

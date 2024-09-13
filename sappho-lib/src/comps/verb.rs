@@ -1,6 +1,7 @@
-mod verbdef;
 mod inclinations;
+pub mod verbdef;
 
-use crate::BnumGroup;
+pub use verbdef::VerbDef;
+
 use super::actor::Perception;
-
+use crate::BnumGroup;
