@@ -95,37 +95,6 @@ impl Mul<Option<f32>> for SparseBNumber {
     }
 }
 
-impl Add<SparseBNumber> for BNumber {
-    type Output = Self;
-
-    fn add(self, rhs: Self) -> Self::Output {
-        if self.bnum.is_none() || rhs.bnum.is_none() {
-            return Self { bnum: None };
-        }
-        Self {
-            bnum: Some(self.bnum.unwrap() + rhs.bnum.unwrap()),
-        }
-    }
-}
-
-impl Sub<SparseBNumber> for BNumber {
-    type Output = Self;
-
-    fn sub(self, rhs: SparseBNumber) -> Self::Output {
-        let rhs: Option<f32> = Option::from(rhs);
-        match rhs {
-            None => self,
-            Some(rhs) => {}
-        }
-        if self.bnum.is_none() || rhs.bnum.is_none() {
-            return Self { bnum: None };
-        }
-        Self {
-            bnum: Some(self.bnum.unwrap() - rhs.bnum.unwrap()),
-        }
-    }
-}
-
 impl Neg for SparseBNumber {
     type Output = Self;
 
