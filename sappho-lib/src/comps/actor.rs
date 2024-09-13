@@ -7,7 +7,7 @@ pub use emotiondef::EmotionDef;
 
 use crate::comps::actor::actor_state::ActorState;
 use crate::comps::Stage;
-use crate::Manager;
+use crate::{Manager, SparseBnumGroup};
 use crate::{bnum_grp, BnumGroup};
 pub use perception::Perception;
 use serde::{self, Deserialize, Serialize};
@@ -71,7 +71,7 @@ impl Actor {
             actor_state: RwLock::new(ActorState {
                 personality: personality.unwrap_or(bnum_grp!()),
                 accordance: accordance.unwrap_or(Perception::new(None)),
-                self_perceptions: self_perceptions.unwrap_or(Perception::new(personality)),
+                self_perceptions: self_perceptions.unwrap_or(Perception::new(None)),
                 perceptions: perceptions.unwrap_or(HashMap::new()),
                 emotional_variance: emotional_variance.unwrap_or(0.5f32),
                 emotions: None,
