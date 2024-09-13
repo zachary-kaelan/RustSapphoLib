@@ -125,3 +125,14 @@ impl Sub<SparseBNumber> for BNumber {
         }
     }
 }
+
+impl Neg for SparseBNumber {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        SparseBNumber::new(match self.bnum {
+            None => None,
+            Some(bnum) => Some(-f32::from(bnum))
+        })
+    }
+}

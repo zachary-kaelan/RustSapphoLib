@@ -81,6 +81,14 @@ impl Mul<f32> for BNumber {
     }
 }
 
+impl Neg for BNumber {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        BNumber::new(-self.val)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::bnum;
