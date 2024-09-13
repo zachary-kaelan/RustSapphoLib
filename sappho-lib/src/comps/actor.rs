@@ -7,8 +7,8 @@ pub use emotiondef::EmotionDef;
 
 use crate::comps::actor::actor_state::ActorState;
 use crate::comps::Stage;
-use crate::{Manager, SparseBnumGroup};
 use crate::{bnum_grp, BnumGroup};
+use crate::{Manager, SparseBnumGroup};
 pub use perception::Perception;
 use serde::{self, Deserialize, Serialize};
 use std::collections::HashMap;

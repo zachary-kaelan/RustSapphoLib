@@ -2,12 +2,12 @@ use crate::{BNumber, BnumGroup};
 
 enum MonadicVerb {
     Negate,
-    Abs
+    Abs,
 }
 
 enum DyadicVerb {
     Plus,
-    Minus
+    Minus,
 }
 
 enum AstNode {
@@ -16,18 +16,18 @@ enum AstNode {
     BNumGroup(BnumGroup),
     MonadicOp {
         verb: MonadicVerb,
-        expr: Box<AstNode>
+        expr: Box<AstNode>,
     },
     DyadicOp {
         verb: DyadicVerb,
         lhs: Box<AstNode>,
-        rhs: Box<AstNode>
+        rhs: Box<AstNode>,
     },
     TriadicOp {
         verb: DyadicVerb,
         lhs: Box<AstNode>,
         rhs: Box<AstNode>,
-        arg: Box<AstNode>
+        arg: Box<AstNode>,
     },
     Type(String),
     Ident(String),
