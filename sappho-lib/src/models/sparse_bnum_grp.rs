@@ -4,7 +4,7 @@ mod sparse_bnum_grp_traits;
 use crate::consts::SparseBnumGroupT;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 /// Personality model.
 pub struct SparseBnumGroup {
     pub values: SparseBnumGroupT,
