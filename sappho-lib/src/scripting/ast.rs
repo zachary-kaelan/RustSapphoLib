@@ -106,3 +106,17 @@ pub fn parse(source: &str) -> Result<Vec<AstNode>, Error<Rule>> {
 
     Ok(ast)
 }
+
+#[cfg(test)]
+mod tests {
+    use std;
+    use crate::scripting::ast::parse;
+
+    #[test]
+    fn parse_test() {
+        let file_text = std::fs::read_to_string("src/scripting/test.sappho").expect("Cannot read file");
+        let ast_node = parse(&file_text).expect("Unsuccessful parse");
+        println!("{:?}", &ast_node);
+        panic!("");
+    }
+}
