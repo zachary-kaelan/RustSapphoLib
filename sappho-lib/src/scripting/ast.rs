@@ -1,11 +1,10 @@
 use std::ffi::{CString};
-use crate::{BNumber, BnumGroup, SparseBnumGroup};
-use self::AstNode::*;
-use pest::iterators::Pair;
+use crate::{BNumber, SparseBnumGroup};
 use pest::error::Error;
 use pest::Parser;
 use pest_derive::Parser;
-use crate::scripting::ast::Rule::bnum_target;
+use crate::scripting::ast_def::{build_ast_from_definition, DefInnerAstNode};
+use crate::scripting::ast_expr::build_ast_from_expr;
 
 #[derive(Parser)]
 #[grammar = "src/scripting/sappho_script.pest"]
@@ -56,7 +55,7 @@ pub enum AstNode {
     Def {
         ident: String,
         display_name: CString,
-        definition: Box<Vec<AstNode>>
+        definition: Box<DefInnerAstNode>
     },
     MonadicOp {
         op: MonadicOp,
@@ -95,11 +94,11 @@ pub fn parse(source: &str) -> Result<Vec<AstNode>, Error<Rule>> {
     let pairs = SapphoParser::parse(Rule::document, source)?;
     for pair in pairs {
         match pair.as_rule() {
-            Rule::expr => {
-
+            Rule::bnum_target_assign => {
+                ast.push(build_ast_from_expr(pair))
             }
             Rule::definition => {
-
+                ast.push(build_ast_from_definition(pair))
             }
             _ => {}
         }
