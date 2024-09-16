@@ -3,7 +3,7 @@
 // sappho_script
 // Author: zach.johnson
 //
-document = _{ SOI ~ "\n"* ~ (stmt ~ "\n"+) * ~ stmt? ~ EOI }
+document = _{ SOI ~ "\n"* ~ stmt ~ (("," | "\n"+ | ";") ~ stmt)* ~ EOI }
 stmt = _{ definition | expr }
 expr_bnum = _{ expr }
 expr_assign = _{ expr | float_optional }
@@ -15,7 +15,7 @@ expr = {
     | bnum
 }
 
-definition = { def_type ~ display_name ~ "{" ~ definition_inner ~ "}" }
+definition = { def_type ~ ident ~ display_name ~ "{" ~ definition_inner ~ "}" }
 def_type = { "ACTOR" | "VERB" | "EMOTION" }
 definition_inner = _{ actor_def_inner | emotion_def_inner }
 
@@ -34,7 +34,7 @@ bnum_target_assign = { bnum_type ~ bnum_ident ~ bnum_target{0,2} ~ "=" ~ expr_as
 bnum_type = { "a" | "p" | "c"  | "s" | "i" }
 
 actor_def_inner = { actor_def_inner_stmt ~ ("," ~ actor_def_inner_stmt)* }
-actor_def_inner_stmt = { actor_group | bnum_target_assign }
+actor_def_inner_stmt = _{ actor_group | bnum_target_assign }
 actor_group = { actor_group_type ~ bnum_group }
 actor_group_type = { "PERSONALITY" | "SELF" | "ACCORDANCE" | perception_group_type | circumstantial_group_type }
 //personality_group_type = { "PERSONALITY" }
@@ -63,7 +63,7 @@ float = @{ ("+" | "-")? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* }
 
 ident = @{ ASCII_ALPHA ~ (ASCII_ALPHANUMERIC | "_")* }
 display_name = @{ string }
-string = @{ "'" ~ ( "''" | (!"'" ~ ANY) )* ~ "'" }
+string = @{ "'" ~ ASCII_ALPHANUMERIC* ~ "'" }
 
 empty = _{ "{" ~ "}" }
 
