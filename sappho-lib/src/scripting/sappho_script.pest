@@ -3,11 +3,11 @@
 // sappho_script
 // Author: zach.johnson
 //
-main = _{ SOI ~ "\n"* ~ (stmt ~ "\n"+) * ~ stmt? ~ EOI }
+document = _{ SOI ~ "\n"* ~ (stmt ~ "\n"+) * ~ stmt? ~ EOI }
 stmt = _{ definition | expr }
-bnum_expr = _{ expr }
-assign_expr = _{ expr | float_optional }
-param_expr = _{ expr | float }
+expr_bnum = _{ expr }
+expr_assign = _{ expr | float_optional }
+expr_param = _{ expr | float }
 expr = {
     expr_monadic
     | expr_dyadic
@@ -15,30 +15,43 @@ expr = {
     | bnum
 }
 
-definition = { def_type ~ display_name }
-
-expr_monadic = { verb_monadic ~ bnum_expr }
-expr_dyadic = { bnum_expr ~ verb_dyadic ~ param_expr }
-expr_triadic = { bnum_expr ~ verb_triadic ~ float ~ bnum_expr }
-
-verb_monadic = { "+" | "-" | "|" }
-verb_dyadic = { "+" | "-" | "*" }
-verb_triadic = { "^" }
-
+definition = { def_type ~ display_name ~ "{" ~ definition_inner ~ "}" }
 def_type = { "ACTOR" | "VERB" | "EMOTION" }
+definition_inner = _{ actor_def_inner | emotion_def_inner }
 
-bnum_assign = { bnum_ident ~ "=" ~ assign_expr }
-bnum_target_assign = { bnum_type ~ bnum_ident ~ bnum_target* ~ "=" ~ assign_expr }
+expr_monadic = { op_monadic ~ expr_bnum }
+expr_dyadic = { (expr_monadic | bnum) ~ op_dyadic ~ expr_param }
+expr_triadic = { (expr_monadic | bnum) ~ op_triadic ~ float ~ expr_bnum }
+
+op_monadic = { "+" | "-" | "|" }
+op_dyadic = { "+" | "-" | "*" }
+op_triadic = { "^" }
+
+
+bnum_assign = { bnum_ident ~ "=" ~ expr_assign }
+bnum_weight = { bnum_ident ~ "=" ~ float }
+bnum_target_assign = { bnum_type ~ bnum_ident ~ bnum_target{0,2} ~ "=" ~ expr_assign }
 bnum_type = { "a" | "p" | "c"  | "s" | "i" }
 
-actor_def = { "ACTOR" ~ ident ~ display_name ~ "{" ~ actor_def_inner ~ "}" }
-actor_def_inner = { (actor_def_inner_stmt ~ ("," ~ actor_def_inner_stmt)*)? }
+actor_def_inner = { actor_def_inner_stmt ~ ("," ~ actor_def_inner_stmt)* }
 actor_def_inner_stmt = { actor_group | bnum_target_assign }
 actor_group = { actor_group_type ~ bnum_group }
-actor_group_type = { "PERSONALITY" | "SELF" | "ACCORDANCE" | perception_group_type }
+actor_group_type = { "PERSONALITY" | "SELF" | "ACCORDANCE" | perception_group_type | circumstantial_group_type }
+//personality_group_type = { "PERSONALITY" }
+//self_group_type = { "SELF" }
+//accordance_group_type = { "ACCORDANCE" }
 perception_group_type = { "PERCEPTION" ~ bnum_target }
+circumstantial_group_type = { "CIRCUMSTANTIAL" ~ bnum_target ~ bnum_target }
+
+emotion_def_inner = { emotion_def_inner_stmt ~ ("," ~ emotion_def_inner_stmt)* }
+emotion_def_inner_stmt = { emotion_personality_modifiers | emotion_perception_modifiers | emotion_personality_weights | emotion_perception_weights }
+emotion_personality_modifiers = { "PERSONALITY_MODS" ~ bnum_group }
+emotion_perception_modifiers = { "PERCEPTION_MODS" ~ bnum_group }
+emotion_personality_weights = { "PERSONALITY_WEIGHTS" ~ bnum_weight_group }
+emotion_perception_weights = { "PERCEPTION_WEIGHTS" ~ bnum_weight_group }
 
 bnum_group = { "{" ~ (bnum_assign ~ ("," ~ bnum_assign)*)? ~ "}" }
+bnum_weight_group = { "{" ~ (bnum_weight ~ ("," ~ bnum_weight)*)? ~ "}" }
 bnum_tuple = { "(" ~ (float_optional ~ ","){4} ~ ")" }
 
 bnum = @{ bnum_type ~ bnum_ident ~ bnum_ident* }
