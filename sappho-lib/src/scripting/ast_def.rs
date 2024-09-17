@@ -1,16 +1,16 @@
 mod actor_ast;
 mod emotion_ast;
 
-use std::ffi::CString;
-use pest::iterators::Pair;
 use crate::scripting::ast::{AstNode, DefType, Rule};
 use crate::scripting::ast_def::actor_ast::{parse_actor_inner, ActorAstNode};
 use crate::scripting::ast_def::emotion_ast::{parse_emotion_inner, EmotionDefAst};
+use pest::iterators::Pair;
+use std::ffi::CString;
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum DefInnerAstNode {
     ActorDef(Vec<ActorAstNode>),
-    EmotionDef(Box<EmotionDefAst>)
+    EmotionDef(Box<EmotionDefAst>),
 }
 
 pub fn build_ast_from_definition(pair: Pair<Rule>) -> AstNode {
@@ -31,7 +31,7 @@ pub fn build_ast_from_definition(pair: Pair<Rule>) -> AstNode {
     AstNode::Def {
         ident: String::from(ident.as_str()),
         display_name: CString::new(display_name).unwrap(),
-        definition: Box::new(def_inner)
+        definition: Box::new(def_inner),
     }
 }
 
@@ -39,13 +39,14 @@ fn parse_definition_inner(pair: Pair<Rule>, def_type: DefType) -> DefInnerAstNod
     match pair.as_rule() {
         Rule::actor_def_inner => {
             if def_type != DefType::Actor {
-                panic!("Matched actor definition for definition type {:?}", def_type)
+                panic!(
+                    "Matched actor definition for definition type {:?}",
+                    def_type
+                )
             }
             DefInnerAstNode::ActorDef(parse_actor_inner(pair))
-        },
-        Rule::emotion_def_inner => {
-            DefInnerAstNode::EmotionDef(Box::new(parse_emotion_inner(pair)))  
-        },
+        }
+        Rule::emotion_def_inner => DefInnerAstNode::EmotionDef(Box::new(parse_emotion_inner(pair))),
         unknown_def => panic!("Unexpected definition inner: {:?}", unknown_def),
     }
 }

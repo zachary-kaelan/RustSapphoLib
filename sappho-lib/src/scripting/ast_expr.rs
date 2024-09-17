@@ -1,6 +1,6 @@
-use std::ffi::CString;
-use pest::iterators::Pair;
 use crate::scripting::ast::{AstNode, BnumType, MonadicOp, Rule, TriadicOp};
+use pest::iterators::Pair;
+use std::ffi::CString;
 
 pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
     match pair.as_rule() {
@@ -36,7 +36,7 @@ pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
             let f_str = pair.as_str();
             let (sign, f_str) = match &f_str[..1] {
                 "-" => (-1f32, &f_str[1..]),
-                _ => (1f32, f_str)
+                _ => (1f32, f_str),
             };
             let float: f32 = f_str.parse().unwrap();
             AstNode::Float(sign * float)
@@ -48,13 +48,23 @@ pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
                 _ => Some({
                     let (sign, f_str) = match &f_str[..1] {
                         "-" => (-1f32, &f_str[1..]),
-                        _ => (1f32, f_str)
+                        _ => (1f32, f_str),
                     };
                     let float: f32 = f_str.parse().unwrap();
                     sign * float
-                })
+                }),
             };
             AstNode::FloatOptional(float_optional)
+        }
+        Rule::bnum_weight => {
+            let mut pair = pair.into_inner();
+            let ident = pair.next().unwrap();
+            let expr_assign = pair.next().unwrap();
+            let expr = build_ast_from_expr(expr_assign);
+            AstNode::BnumWeight {
+                ident: String::from(ident.as_str()),
+                expr: Box::new(expr),
+            }
         }
         Rule::bnum_assign => {
             let mut pair = pair.into_inner();
@@ -63,7 +73,7 @@ pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
             let expr = build_ast_from_expr(expr_assign);
             AstNode::BnumAssign {
                 ident: String::from(ident.as_str()),
-                expr: Box::new(expr)
+                expr: Box::new(expr),
             }
         }
         Rule::bnum_target_assign => {
@@ -88,9 +98,13 @@ pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
             let bnums: Vec<AstNode> = pair.into_inner().map(build_ast_from_expr).collect();
             AstNode::BnumGroup(bnums)
         }
+        Rule::bnum_weight_group => {
+            let bnums: Vec<AstNode> = pair.into_inner().map(build_ast_from_expr).collect();
+            AstNode::BnumWeightGroup(bnums)
+        }
         Rule::bnum_tuple => {
             let bnums: Vec<AstNode> = pair.into_inner().map(build_ast_from_expr).collect();
-            AstNode::BnumGroup(bnums)
+            AstNode::BnumTuple(bnums)
         }
         Rule::string => {
             let str = &pair.as_str();
@@ -137,12 +151,16 @@ fn parse_triadic_op(op: Pair<Rule>, lhs: AstNode, rhs: AstNode, arg: AstNode) ->
         op: match op.as_str() {
             "^" => TriadicOp::Blend,
             _ => panic!("Unsupported triadic op: {}", op.as_str()),
-        }
+        },
     }
 }
 
-fn parse_bnum_target_assign(bnum_type: pest::iterators::Pair<Rule>, ident: String,
-                            target: Vec<String>, expr: AstNode) -> AstNode {
+fn parse_bnum_target_assign(
+    bnum_type: pest::iterators::Pair<Rule>,
+    ident: String,
+    target: Vec<String>,
+    expr: AstNode,
+) -> AstNode {
     AstNode::BnumTargetAssign {
         ident,
         bnum_type: match bnum_type.as_str() {

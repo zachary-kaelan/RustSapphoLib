@@ -1,6 +1,6 @@
-use pest::iterators::Pair;
 use crate::scripting::ast::{AstNode, Rule};
 use crate::scripting::ast_expr::build_ast_from_expr;
+use pest::iterators::Pair;
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct EmotionDefAst {
@@ -12,8 +12,11 @@ pub struct EmotionDefAst {
 
 pub fn parse_emotion_inner(pair: Pair<Rule>) -> EmotionDefAst {
     let mut emotiondef = EmotionDefAst {
-        personality_modifiers: None, personality_weights: None,
-        perception_modifiers: None, perception_weights: None };
+        personality_modifiers: None,
+        personality_weights: None,
+        perception_modifiers: None,
+        perception_weights: None,
+    };
     //let mut pair = pair.into_inner();
     for stmt in pair.into_inner() {
         match stmt.as_rule() {
@@ -29,7 +32,7 @@ pub fn parse_emotion_inner(pair: Pair<Rule>) -> EmotionDefAst {
             Rule::emotion_perception_weights => {
                 emotiondef.perception_weights = Some(Box::new(build_ast_from_expr(stmt)));
             }
-            unknown_stmt => panic!("Unknown emotion statement {:?}", unknown_stmt)
+            unknown_stmt => panic!("Unknown emotion statement {:?}", unknown_stmt),
         }
     }
     emotiondef

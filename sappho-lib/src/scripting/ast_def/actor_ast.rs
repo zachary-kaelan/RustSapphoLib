@@ -1,6 +1,6 @@
-use pest::iterators::Pair;
-use crate::scripting::ast::{AstNode, Rule, BnumType};
+use crate::scripting::ast::{AstNode, BnumType, Rule};
 use crate::scripting::ast_expr::build_ast_from_expr;
+use pest::iterators::Pair;
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum ActorAstNode {
@@ -9,7 +9,7 @@ pub enum ActorAstNode {
         target: Vec<String>,
         group: Box<AstNode>,
     },
-    BnumTargetAssign(Box<AstNode>)
+    BnumTargetAssign(Box<AstNode>),
 }
 
 pub fn parse_actor_inner(pair: Pair<Rule>) -> Vec<ActorAstNode> {
@@ -17,13 +17,11 @@ pub fn parse_actor_inner(pair: Pair<Rule>) -> Vec<ActorAstNode> {
     let pair = pair.into_inner();
     for stmt in pair {
         match stmt.as_rule() {
-            Rule::actor_group => {
-                nodes.push(parse_actor_group(stmt))   
-            }
-            Rule::bnum_target_assign => {
-                nodes.push(ActorAstNode::BnumTargetAssign(Box::new(build_ast_from_expr(stmt))))
-            }
-            unknown_stmt => panic!("Unknown actor statement {:?}", unknown_stmt)
+            Rule::actor_group => nodes.push(parse_actor_group(stmt)),
+            Rule::bnum_target_assign => nodes.push(ActorAstNode::BnumTargetAssign(Box::new(
+                build_ast_from_expr(stmt),
+            ))),
+            unknown_stmt => panic!("Unknown actor statement {:?}", unknown_stmt),
         }
     }
     nodes
@@ -50,18 +48,16 @@ fn parse_actor_group(actor_group: Pair<Rule>) -> ActorAstNode {
             targets.push(String::from(target2.as_str()));
             BnumType::Circumstantial
         }
-        _ => {
-            match group_type.as_str() {
-                "PERSONALITY" => BnumType::Personality,
-                "SELF" => BnumType::SelfPerception,
-                "ACCORDANCE" => BnumType::Accordance,
-                unknown_group_type => panic!("Unknown actor group type {}", unknown_group_type)
-            }
-        }
+        _ => match group_type.as_str() {
+            "PERSONALITY" => BnumType::Personality,
+            "SELF" => BnumType::SelfPerception,
+            "ACCORDANCE" => BnumType::Accordance,
+            unknown_group_type => panic!("Unknown actor group type {}", unknown_group_type),
+        },
     };
     ActorAstNode::ActorGroup {
         bnum_type,
         target: targets,
-        group: Box::new(bnum_group)
+        group: Box::new(bnum_group),
     }
 }
