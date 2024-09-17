@@ -2,7 +2,8 @@ mod actor_ast;
 mod emotion_ast;
 
 use crate::scripting::ast::{AstNode, DefType, Rule};
-use crate::scripting::ast_def::actor_ast::{parse_actor_inner, ActorAstNode};
+use crate::scripting::ast_def::actor_ast::parse_actor_inner;
+pub use crate::scripting::ast_def::actor_ast::ActorAstNode;
 use crate::scripting::ast_def::emotion_ast::{parse_emotion_inner, EmotionDefAst};
 use pest::iterators::Pair;
 use std::ffi::CString;

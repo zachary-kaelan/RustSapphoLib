@@ -1,0 +1,12 @@
+ACTOR buddy 'Buddy' {
+    PERSONALITY {
+        Bad_Good = 0.5,
+        Faithless_Honest = 0.1,
+        Timid_Dominant = -0.2,
+        Ascetic_Hedonistic = -0.5
+    },
+    PERCEPTION[mary] {
+        Dislike_Affection = -0.75,
+        Mistrust_Faith = -0.5
+    }
+}

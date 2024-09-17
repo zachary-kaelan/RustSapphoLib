@@ -30,16 +30,17 @@ op_triadic = { "^" }
 
 bnum_assign = { bnum_ident ~ "=" ~ expr_assign }
 bnum_weight = { bnum_ident ~ "=" ~ float }
-bnum_target_assign = { bnum_type ~ bnum_ident ~ bnum_target{0,2} ~ "=" ~ expr_assign }
+bnum_target_assign = { bnum_type ~ bnum_ident ~ bnum_target{0,3} ~ "=" ~ expr_assign }
 bnum_type = { "a" | "p" | "c"  | "s" | "i" }
 
 actor_def_inner = { actor_def_inner_stmt ~ ("," ~ actor_def_inner_stmt)* }
 actor_def_inner_stmt = _{ actor_group | bnum_target_assign }
 actor_group = { actor_group_type ~ bnum_group }
-actor_group_type = { "PERSONALITY" | "SELF" | "ACCORDANCE" | perception_group_type | circumstantial_group_type }
-//personality_group_type = { "PERSONALITY" }
-//self_group_type = { "SELF" }
-//accordance_group_type = { "ACCORDANCE" }
+//actor_group_type = { "PERSONALITY" | "SELF" | "ACCORDANCE" | perception_group_type | circumstantial_group_type }
+actor_group_type = _{ personality_group_type | self_group_type | accordance_group_type | perception_group_type | circumstantial_group_type }
+personality_group_type = { "PERSONALITY" }
+self_group_type = { "SELF" }
+accordance_group_type = { "ACCORDANCE" }
 perception_group_type = { "PERCEPTION" ~ bnum_target }
 circumstantial_group_type = { "CIRCUMSTANTIAL" ~ bnum_target ~ bnum_target }
 
@@ -50,6 +51,7 @@ emotion_perception_modifiers = { "PERCEPTION_MODS" ~ bnum_group }
 emotion_personality_weights = { "PERSONALITY_WEIGHTS" ~ bnum_weight_group }
 emotion_perception_weights = { "PERCEPTION_WEIGHTS" ~ bnum_weight_group }
 
+bnum_group_or_tuple = _{ bnum_group | bnum_tuple }
 bnum_group = { "{" ~ (bnum_assign ~ ("," ~ bnum_assign)*)? ~ "}" }
 bnum_weight_group = { "{" ~ (bnum_weight ~ ("," ~ bnum_weight)*)? ~ "}" }
 bnum_tuple = { "(" ~ (float_optional ~ ","){4} ~ ")" }
