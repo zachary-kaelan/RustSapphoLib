@@ -6,7 +6,7 @@ use crate::scripting::ast_expr::build_ast_from_expr;
 pub enum ActorAstNode {
     ActorGroup {
         bnum_type: BnumType,
-        target: Box<Vec<String>>,
+        target: Vec<String>,
         group: Box<AstNode>,
     },
     BnumTargetAssign(Box<AstNode>)
@@ -61,7 +61,7 @@ fn parse_actor_group(actor_group: Pair<Rule>) -> ActorAstNode {
     };
     ActorAstNode::ActorGroup {
         bnum_type,
-        target: Box::new(targets),
+        target: targets,
         group: Box::new(bnum_group)
     }
 }

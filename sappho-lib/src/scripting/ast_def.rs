@@ -9,7 +9,7 @@ use crate::scripting::ast_def::emotion_ast::{parse_emotion_inner, EmotionDefAst}
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum DefInnerAstNode {
-    ActorDef(Box<Vec<ActorAstNode>>),
+    ActorDef(Vec<ActorAstNode>),
     EmotionDef(Box<EmotionDefAst>)
 }
 
@@ -41,7 +41,7 @@ fn parse_definition_inner(pair: Pair<Rule>, def_type: DefType) -> DefInnerAstNod
             if def_type != DefType::Actor {
                 panic!("Matched actor definition for definition type {:?}", def_type)
             }
-            DefInnerAstNode::ActorDef(Box::new(parse_actor_inner(pair)))
+            DefInnerAstNode::ActorDef(parse_actor_inner(pair))
         },
         Rule::emotion_def_inner => {
             DefInnerAstNode::EmotionDef(Box::new(parse_emotion_inner(pair)))  
