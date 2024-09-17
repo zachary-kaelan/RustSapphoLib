@@ -84,6 +84,14 @@ pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
             }
             parse_bnum_target_assign(bnum_type, String::from(ident.as_str()), target, expr)
         }
+        Rule::bnum_group => {
+            let bnums: Vec<AstNode> = pair.into_inner().map(build_ast_from_expr).collect();
+            AstNode::BnumGroup(bnums)
+        }
+        Rule::bnum_tuple => {
+            let bnums: Vec<AstNode> = pair.into_inner().map(build_ast_from_expr).collect();
+            AstNode::BnumGroup(bnums)
+        }
         Rule::string => {
             let str = &pair.as_str();
             // Strip leading and ending quotes.
