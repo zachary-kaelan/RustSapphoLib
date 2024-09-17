@@ -87,7 +87,7 @@ pub enum AstNode {
     BnumTargetAssign {
         bnum_type: BnumType,
         ident: String,
-        target: Box<Vec<String>>,
+        target: Vec<String>,
         expr: Box<AstNode>,
     },
     Type(String),

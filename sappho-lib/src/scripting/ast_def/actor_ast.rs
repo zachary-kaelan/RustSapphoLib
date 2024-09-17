@@ -37,7 +37,8 @@ fn parse_actor_group(actor_group: Pair<Rule>) -> ActorAstNode {
         Rule::perception_group_type => {
             let mut group_type = group_type.into_inner();
             let target = group_type.next().unwrap();
-            targets.push(String::from(target.as_str()));
+            let target = target.as_str();
+            targets.push(String::from(&target[1..target.len() - 1]));
             BnumType::Perception
         }
         Rule::circumstantial_group_type => {

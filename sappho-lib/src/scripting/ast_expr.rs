@@ -72,7 +72,7 @@ pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
             let expr_assign = pair.next().unwrap();
             let expr = build_ast_from_expr(expr_assign);
             AstNode::BnumAssign {
-                ident: String::from(ident.as_str()),
+                ident: ident.as_str().to_lowercase(),
                 expr: Box::new(expr),
             }
         }
@@ -85,14 +85,17 @@ pub fn build_ast_from_expr(pair: Pair<Rule>) -> AstNode {
             loop {
                 let next_pair = pair.next().unwrap();
                 match next_pair.as_rule() {
-                    Rule::bnum_target => target.push(String::from(next_pair.as_str())),
+                    Rule::bnum_target => {
+                        let next_pair = next_pair.as_str();
+                        target.push(String::from(&next_pair[1..next_pair.len() - 1]));
+                    },
                     _ => {
                         expr = build_ast_from_expr(next_pair);
                         break;
                     }
                 }
             }
-            parse_bnum_target_assign(bnum_type, String::from(ident.as_str()), target, expr)
+            parse_bnum_target_assign(bnum_type, ident.as_str().to_lowercase(), target, expr)
         }
         Rule::bnum_group => {
             let bnums: Vec<AstNode> = pair.into_inner().map(build_ast_from_expr).collect();
@@ -171,7 +174,7 @@ fn parse_bnum_target_assign(
             "i" => BnumType::Personality,
             _ => panic!("Unsupported bnum type: {}", bnum_type.as_str()),
         },
-        target: Box::new(target),
+        target,
         expr: Box::new(expr),
     }
 }
