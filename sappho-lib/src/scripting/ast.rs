@@ -50,8 +50,8 @@ pub enum AstNode {
     Float(f32),
     FloatOptional(Option<f32>),
     BNumber(BNumber),
-    BnumGroup(SparseBnumGroup),
-    BnumTuple(SparseBnumGroup),
+    BnumGroup(Vec<AstNode>),
+    BnumTuple(Vec<AstNode>),
     Def {
         ident: String,
         display_name: CString,
