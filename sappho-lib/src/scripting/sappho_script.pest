@@ -15,7 +15,7 @@ expr = {
     | bnum
 }
 
-definition = { def_type ~ ident ~ display_name ~ "{" ~ definition_inner ~ "}" }
+definition = { def_type ~ ident ~ string ~ "{" ~ definition_inner ~ "}" }
 def_type = { "ACTOR" | "VERB" | "EMOTION" }
 definition_inner = _{ actor_def_inner | emotion_def_inner }
 
@@ -62,8 +62,9 @@ float_optional = @{ "_" | float }
 float = @{ ("+" | "-")? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* }
 
 ident = @{ ASCII_ALPHA ~ (ASCII_ALPHANUMERIC | "_")* }
-display_name = @{ string }
-string = @{ "'" ~ ASCII_ALPHANUMERIC* ~ "'" }
+
+//string = @{ "'" ~ ASCII_ALPHANUMERIC* ~ "'" }
+string = @{ "'" ~ ( "''" | (!"'" ~ ANY) )* ~ "'" }
 
 empty = _{ "{" ~ "}" }
 

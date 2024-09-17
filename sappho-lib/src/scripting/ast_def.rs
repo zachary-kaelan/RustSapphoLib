@@ -24,11 +24,13 @@ pub fn build_ast_from_definition(pair: Pair<Rule>) -> AstNode {
     };
     let ident = pair.next().unwrap();
     let display_name = pair.next().unwrap();
+    let display_name = display_name.as_str();
+    let display_name = &display_name[1..display_name.len() - 1];
     let def_inner = pair.next().unwrap();
     let def_inner = parse_definition_inner(def_inner, def_type);
     AstNode::Def {
         ident: String::from(ident.as_str()),
-        display_name: CString::new(display_name.as_str()).unwrap(),
+        display_name: CString::new(display_name).unwrap(),
         definition: Box::new(def_inner)
     }
 }
