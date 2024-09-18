@@ -1,0 +1,8 @@
+wrap_comments = true
+edition = "2021"
+max_width = 80
+imports_granularity = "Module"
+reorder_impl_items = true
+group_imports = "StdExternalCrate"
+struct_field_align_threshold = 20
+use_field_init_shorthand = true

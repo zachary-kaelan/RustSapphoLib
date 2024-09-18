@@ -4,7 +4,9 @@ mod emotion_ast;
 use crate::scripting::ast::{AstNode, DefType, Rule};
 use crate::scripting::ast_def::actor_ast::parse_actor_inner;
 pub use crate::scripting::ast_def::actor_ast::ActorAstNode;
-use crate::scripting::ast_def::emotion_ast::{parse_emotion_inner, EmotionDefAst};
+use crate::scripting::ast_def::emotion_ast::{
+    parse_emotion_inner, EmotionDefAst,
+};
 use pest::iterators::Pair;
 use std::ffi::CString;
 
@@ -36,7 +38,10 @@ pub fn build_ast_from_definition(pair: Pair<Rule>) -> AstNode {
     }
 }
 
-fn parse_definition_inner(pair: Pair<Rule>, def_type: DefType) -> DefInnerAstNode {
+fn parse_definition_inner(
+    pair: Pair<Rule>,
+    def_type: DefType,
+) -> DefInnerAstNode {
     match pair.as_rule() {
         Rule::actor_def_inner => {
             if def_type != DefType::Actor {
@@ -47,7 +52,9 @@ fn parse_definition_inner(pair: Pair<Rule>, def_type: DefType) -> DefInnerAstNod
             }
             DefInnerAstNode::ActorDef(parse_actor_inner(pair))
         }
-        Rule::emotion_def_inner => DefInnerAstNode::EmotionDef(Box::new(parse_emotion_inner(pair))),
+        Rule::emotion_def_inner => {
+            DefInnerAstNode::EmotionDef(Box::new(parse_emotion_inner(pair)))
+        }
         unknown_def => panic!("Unexpected definition inner: {:?}", unknown_def),
     }
 }

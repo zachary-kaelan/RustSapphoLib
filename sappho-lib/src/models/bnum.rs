@@ -29,7 +29,9 @@ impl BNumber {
     /// Calculates the original unbounded number from `BNumber` value `n`.
     pub fn unbind(n: f32) -> f32 {
         assert!(((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&n));
-        n.signum() * (crate::models::B_MULTI / (1f32 - n.abs()) - crate::models::B_MULTI)
+        n.signum()
+            * (crate::models::B_MULTI / (1f32 - n.abs())
+                - crate::models::B_MULTI)
     }
 
     /// Returns the original, unbounded number.

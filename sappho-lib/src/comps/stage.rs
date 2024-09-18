@@ -16,7 +16,11 @@ pub struct Stage {
 }
 
 impl Stage {
-    pub fn new(id: String, display_name: String, actors: Option<Vec<Weak<Actor>>>) -> Self {
+    pub fn new(
+        id: String,
+        display_name: String,
+        actors: Option<Vec<Weak<Actor>>>,
+    ) -> Self {
         let (actor_names, actors) = match actors {
             None => (Vec::new(), Vec::new()),
             Some(a) => {
@@ -128,8 +132,10 @@ mod tests {
 
     #[test]
     fn stage_move() {
-        let stage1 = Stage::new(String::from("stage1"), String::from("Stage 1"), None);
-        let stage2 = Stage::new(String::from("stage2"), String::from("Stage 2"), None);
+        let stage1 =
+            Stage::new(String::from("stage1"), String::from("Stage 1"), None);
+        let stage2 =
+            Stage::new(String::from("stage2"), String::from("Stage 2"), None);
         let actor = Arc::new(Actor::default(
             String::from("actor1"),
             String::from("Actor 1"),

@@ -76,8 +76,11 @@ mod tests {
     #[test]
     fn personality_macro() {
         let new_personality = bnum_grp!(0.5f32, 0.25f32, 0.75f32, 0.0f32);
-        let expected_personality: [f32; BNUM_GROUP_SIZE] = [0.5f32, 0.25f32, 0.75f32, 0.0f32];
-        for (value, expected) in new_personality.values.iter().zip(expected_personality) {
+        let expected_personality: [f32; BNUM_GROUP_SIZE] =
+            [0.5f32, 0.25f32, 0.75f32, 0.0f32];
+        for (value, expected) in
+            new_personality.values.iter().zip(expected_personality)
+        {
             assert_eq!(f32::from(*value), expected);
         }
     }

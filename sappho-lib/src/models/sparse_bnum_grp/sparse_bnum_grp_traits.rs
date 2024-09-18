@@ -88,7 +88,8 @@ mod tests {
 
     #[test]
     fn sparse_personality_display() {
-        let personality = sparse_bnum_grp!(f32::NAN, -0.25f32, f32::NAN, 0.0f32);
+        let personality =
+            sparse_bnum_grp!(f32::NAN, -0.25f32, f32::NAN, 0.0f32);
         assert_eq!(
             personality.to_string(),
             "faithless_honest: -0.250, \

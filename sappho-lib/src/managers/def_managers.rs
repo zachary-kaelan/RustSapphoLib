@@ -3,7 +3,8 @@ use crate::managers::Manager;
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
 
-static EMOTION_DEFS: Lazy<HashMap<String, EmotionDef>> = Lazy::new(HashMap::new);
+static EMOTION_DEFS: Lazy<HashMap<String, EmotionDef>> =
+    Lazy::new(HashMap::new);
 static VERB_DEFS: Lazy<HashMap<String, VerbDef>> = Lazy::new(HashMap::new);
 
 impl Manager {

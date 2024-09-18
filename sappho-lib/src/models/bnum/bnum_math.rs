@@ -17,7 +17,9 @@ impl BNumber {
         let other_value: Option<f32> = Option::from(other);
         match other_value {
             None => self,
-            Some(other_value) => Self::new(self.val * (1f32 - pos) + other_value * pos),
+            Some(other_value) => {
+                Self::new(self.val * (1f32 - pos) + other_value * pos)
+            }
         }
     }
 }

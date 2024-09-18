@@ -36,14 +36,18 @@ impl<'de> Deserialize<'de> for BNumber {
             type Value = f32;
 
             fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {
-                write!(formatter, "A float between -1.0 and 1.0 (non-inclusive)")
+                write!(
+                    formatter,
+                    "A float between -1.0 and 1.0 (non-inclusive)"
+                )
             }
 
             fn visit_f32<E>(self, v: f32) -> Result<Self::Value, E>
             where
                 E: Error,
             {
-                if ((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&v) {
+                if ((-1f32 + f32::EPSILON)..=(1f32 - f32::EPSILON)).contains(&v)
+                {
                     Ok(v)
                 } else {
                     Err(Error::custom("Value outside of range"))

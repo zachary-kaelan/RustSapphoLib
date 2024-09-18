@@ -71,28 +71,38 @@ impl Aliases {
         alias2: &str,
     ) -> Option<usize> {
         let mut alias_dict = ALIASES.get_alias_dict_mut(alias_type).unwrap();
-        let existing_index = *{ alias_dict.get(alias1).or(alias_dict.get(alias2)) }?;
+        let existing_index =
+            *{ alias_dict.get(alias1).or(alias_dict.get(alias2)) }?;
         alias_dict.insert(String::from(alias2), existing_index);
         Some(existing_index)
     }
 
-    pub fn get_index_for_alias(alias_type: &AliasType, alias: &str) -> Option<usize> {
+    pub fn get_index_for_alias(
+        alias_type: &AliasType,
+        alias: &str,
+    ) -> Option<usize> {
         let mut alias_dict = ALIASES.get_alias_dict(alias_type).unwrap();
         let mut index = alias_dict.get(alias);
         if index.is_none()
-            && (*alias_type == AliasType::SelfPerception || *alias_type == AliasType::Accordance)
+            && (*alias_type == AliasType::SelfPerception
+                || *alias_type == AliasType::Accordance)
         {
-            alias_dict = ALIASES.get_alias_dict(&AliasType::Perception).unwrap();
+            alias_dict =
+                ALIASES.get_alias_dict(&AliasType::Perception).unwrap();
             index = alias_dict.get(alias);
         }
         if index.is_none() && *alias_type != AliasType::Personality {
-            alias_dict = ALIASES.get_alias_dict(&AliasType::Personality).unwrap();
+            alias_dict =
+                ALIASES.get_alias_dict(&AliasType::Personality).unwrap();
             index = alias_dict.get(alias);
         }
         index.copied()
     }
 
-    pub fn get_index_for_bnum_alias(bnum_type: &BnumType, alias: &str) -> Option<usize> {
+    pub fn get_index_for_bnum_alias(
+        bnum_type: &BnumType,
+        alias: &str,
+    ) -> Option<usize> {
         let alias_type = match bnum_type {
             BnumType::Personality => AliasType::Personality,
             BnumType::Accordance => AliasType::Accordance,
@@ -124,7 +134,11 @@ impl Aliases {
                 Self::add_alias(&alias_type, alias, i);
             }
         }
-        Self::add_alias_for_existing(&AliasType::Personality, "False_Honest", "Faithless_Honest");
+        Self::add_alias_for_existing(
+            &AliasType::Personality,
+            "False_Honest",
+            "Faithless_Honest",
+        );
     }
 }
 

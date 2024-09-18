@@ -51,10 +51,11 @@ impl SparseActor {
                     BnumType::SelfPerception => &mut self.self_perceptions,
                     BnumType::Personality => &mut self.personality,
                     BnumType::Perception => {
-                        let target = target.get(0).expect("No target specified");
-                        self.perceptions
-                            .entry(target.clone())
-                            .or_insert(SparseBnumGroup::from([None; BNUM_GROUP_SIZE]))
+                        let target =
+                            target.get(0).expect("No target specified");
+                        self.perceptions.entry(target.clone()).or_insert(
+                            SparseBnumGroup::from([None; BNUM_GROUP_SIZE]),
+                        )
                     }
                     BnumType::Circumstantial => {
                         todo!()
@@ -107,7 +108,8 @@ impl Manager {
                 continue;
             }
 
-            let file_text = std::fs::read_to_string(file.path()).expect("Cannot read file");
+            let file_text =
+                std::fs::read_to_string(file.path()).expect("Cannot read file");
             let ast_nodes = parse(&file_text).expect("Unsuccessful parse");
 
             for node in ast_nodes {
@@ -118,8 +120,10 @@ impl Manager {
                         definition,
                     } => match definition.deref() {
                         DefInnerAstNode::ActorDef(def_ast) => {
-                            actor_display_names
-                                .insert(ident.clone(), display_name.into_string().unwrap());
+                            actor_display_names.insert(
+                                ident.clone(),
+                                display_name.into_string().unwrap(),
+                            );
                             let mut sparse_actor = SparseActor::new();
 
                             for def_ast_node in def_ast {
@@ -128,43 +132,45 @@ impl Manager {
                                         bnum_type,
                                         target,
                                         group,
-                                    } => match bnum_type {
-                                        BnumType::Accordance => {
-                                            sparse_actor.accordance = extract_bnum_group_or_tuple(
-                                                &Some(group.clone()),
-                                                AliasType::Accordance,
-                                            )
-                                            .expect("Accordance failed");
-                                        }
-                                        BnumType::SelfPerception => {
-                                            sparse_actor.self_perceptions =
-                                                extract_bnum_group_or_tuple(
+                                    } => {
+                                        match bnum_type {
+                                            BnumType::Accordance => {
+                                                sparse_actor.accordance = extract_bnum_group_or_tuple(
                                                     &Some(group.clone()),
-                                                    AliasType::Perception,
+                                                    AliasType::Accordance,
                                                 )
-                                                .expect("Perception failed");
-                                        }
-                                        BnumType::Personality => {
-                                            sparse_actor.personality = extract_bnum_group_or_tuple(
-                                                &Some(group.clone()),
-                                                AliasType::Personality,
-                                            )
-                                            .expect("Personality failed");
-                                        }
-                                        BnumType::Perception => {
-                                            sparse_actor.perceptions.insert(
-                                                target.get(0).unwrap().clone(),
-                                                extract_bnum_group_or_tuple(
+                                                    .expect("Accordance failed");
+                                            }
+                                            BnumType::SelfPerception => {
+                                                sparse_actor.self_perceptions =
+                                                    extract_bnum_group_or_tuple(
+                                                        &Some(group.clone()),
+                                                        AliasType::Perception,
+                                                    )
+                                                    .expect("Perception failed");
+                                            }
+                                            BnumType::Personality => {
+                                                sparse_actor.personality = extract_bnum_group_or_tuple(
                                                     &Some(group.clone()),
-                                                    AliasType::Perception,
+                                                    AliasType::Personality,
                                                 )
-                                                .expect("Perception failed"),
-                                            );
+                                                    .expect("Personality failed");
+                                            }
+                                            BnumType::Perception => {
+                                                sparse_actor.perceptions.insert(
+                                                    target.get(0).unwrap().clone(),
+                                                    extract_bnum_group_or_tuple(
+                                                        &Some(group.clone()),
+                                                        AliasType::Perception,
+                                                    )
+                                                        .expect("Perception failed"),
+                                                );
+                                            }
+                                            BnumType::Circumstantial => {
+                                                todo!()
+                                            }
                                         }
-                                        BnumType::Circumstantial => {
-                                            todo!()
-                                        }
-                                    },
+                                    }
                                     ActorAstNode::BnumTargetAssign(assign) => {
                                         sparse_actor.assign(assign.as_ref())
                                     }

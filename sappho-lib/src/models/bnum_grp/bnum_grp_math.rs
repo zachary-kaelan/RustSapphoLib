@@ -27,7 +27,9 @@ impl BnumGroup {
                     .values
                     .iter()
                     .zip(other_values.iter())
-                    .map(|(value, other_value)| value.blend_with_sparse(*other_value, pos))
+                    .map(|(value, other_value)| {
+                        value.blend_with_sparse(*other_value, pos)
+                    })
                     .collect::<Vec<BNumber>>()
                     .try_into()
                     .expect("Incorrect Length");

@@ -21,18 +21,24 @@ pub fn parse_emotion_inner(pair: Pair<Rule>) -> EmotionDefAst {
     for stmt in pair.into_inner() {
         match stmt.as_rule() {
             Rule::emotion_personality_modifiers => {
-                emotiondef.personality_modifiers = Some(Box::new(build_ast_from_expr(stmt)));
+                emotiondef.personality_modifiers =
+                    Some(Box::new(build_ast_from_expr(stmt)));
             }
             Rule::emotion_perception_modifiers => {
-                emotiondef.perception_modifiers = Some(Box::new(build_ast_from_expr(stmt)));
+                emotiondef.perception_modifiers =
+                    Some(Box::new(build_ast_from_expr(stmt)));
             }
             Rule::emotion_personality_weights => {
-                emotiondef.personality_weights = Some(Box::new(build_ast_from_expr(stmt)));
+                emotiondef.personality_weights =
+                    Some(Box::new(build_ast_from_expr(stmt)));
             }
             Rule::emotion_perception_weights => {
-                emotiondef.perception_weights = Some(Box::new(build_ast_from_expr(stmt)));
+                emotiondef.perception_weights =
+                    Some(Box::new(build_ast_from_expr(stmt)));
             }
-            unknown_stmt => panic!("Unknown emotion statement {:?}", unknown_stmt),
+            unknown_stmt => {
+                panic!("Unknown emotion statement {:?}", unknown_stmt)
+            }
         }
     }
     emotiondef

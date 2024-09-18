@@ -118,7 +118,8 @@ pub fn extract_bnum_group_or_tuple(
         None => Ok(SparseBnumGroup::new(None)),
         Some(node) => match node.as_ref() {
             AstNode::BnumGroup(g) => {
-                let mut bnums: [Option<f32>; BNUM_GROUP_SIZE] = [None; BNUM_GROUP_SIZE];
+                let mut bnums: [Option<f32>; BNUM_GROUP_SIZE] =
+                    [None; BNUM_GROUP_SIZE];
                 for node in g {
                     match node {
                         AstNode::BnumAssign { ident, expr } => {
@@ -129,7 +130,10 @@ pub fn extract_bnum_group_or_tuple(
                                     unreachable!()
                                 }
                             };
-                            match Aliases::get_index_for_alias(&alias_type, ident) {
+                            match Aliases::get_index_for_alias(
+                                &alias_type,
+                                ident,
+                            ) {
                                 None => {
                                     return Err(super::error::Error::UnrecognizedBNumberAlias(
                                         ident.clone(),
@@ -168,7 +172,8 @@ pub fn extract_weights_group_or_tuple(
         None => Ok(None),
         Some(node) => match node.as_ref() {
             AstNode::BnumWeightGroup(g) => {
-                let mut bnums: [Option<f32>; BNUM_GROUP_SIZE] = [None; BNUM_GROUP_SIZE];
+                let mut bnums: [Option<f32>; BNUM_GROUP_SIZE] =
+                    [None; BNUM_GROUP_SIZE];
                 for node in g {
                     match node {
                         AstNode::BnumWeight { ident, expr } => {
@@ -179,7 +184,10 @@ pub fn extract_weights_group_or_tuple(
                                     unreachable!()
                                 }
                             };
-                            match Aliases::get_index_for_alias(&alias_type, ident) {
+                            match Aliases::get_index_for_alias(
+                                &alias_type,
+                                ident,
+                            ) {
                                 None => {
                                     return Err(super::error::Error::UnrecognizedBNumberAlias(
                                         ident.clone(),
@@ -233,8 +241,8 @@ mod tests {
 
     #[test]
     fn parse_test() {
-        let file_text =
-            std::fs::read_to_string("src/scripting/test.sappho").expect("Cannot read file");
+        let file_text = std::fs::read_to_string("src/scripting/test.sappho")
+            .expect("Cannot read file");
         let ast_node = parse(&file_text).expect("Unsuccessful parse");
         println!("{:?}", &ast_node);
         panic!("");

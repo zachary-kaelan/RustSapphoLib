@@ -2,8 +2,8 @@ mod sparse_bnum_grp_math;
 mod sparse_bnum_grp_traits;
 
 use crate::consts::{SparseBnumGroupT, BNUM_GROUP_SIZE};
-use serde::{Deserialize, Serialize};
 use crate::SparseBNumber;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 /// Personality model.
@@ -15,7 +15,7 @@ impl SparseBnumGroup {
     pub fn new(values: SparseBnumGroupT) -> Self {
         Self { values }
     }
-    
+
     pub fn give_values(&mut self) {
         if self.values.is_none() {
             self.values = Some([SparseBNumber::new(None); BNUM_GROUP_SIZE]);

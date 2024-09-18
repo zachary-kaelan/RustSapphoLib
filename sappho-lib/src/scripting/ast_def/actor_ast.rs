@@ -18,10 +18,14 @@ pub fn parse_actor_inner(pair: Pair<Rule>) -> Vec<ActorAstNode> {
     for stmt in pair {
         match stmt.as_rule() {
             Rule::actor_group => nodes.push(parse_actor_group(stmt)),
-            Rule::bnum_target_assign => nodes.push(ActorAstNode::BnumTargetAssign(Box::new(
-                build_ast_from_expr(stmt),
-            ))),
-            unknown_stmt => panic!("Unknown actor statement {:?}", unknown_stmt),
+            Rule::bnum_target_assign => {
+                nodes.push(ActorAstNode::BnumTargetAssign(Box::new(
+                    build_ast_from_expr(stmt),
+                )))
+            }
+            unknown_stmt => {
+                panic!("Unknown actor statement {:?}", unknown_stmt)
+            }
         }
     }
     nodes
@@ -53,7 +57,9 @@ fn parse_actor_group(actor_group: Pair<Rule>) -> ActorAstNode {
             "PERSONALITY" => BnumType::Personality,
             "SELF" => BnumType::SelfPerception,
             "ACCORDANCE" => BnumType::Accordance,
-            unknown_group_type => panic!("Unknown actor group type {}", unknown_group_type),
+            unknown_group_type => {
+                panic!("Unknown actor group type {}", unknown_group_type)
+            }
         },
     };
     ActorAstNode::ActorGroup {

@@ -23,9 +23,8 @@ impl ActorState {
     /// Get effective personality, with emotions taken into account.
     pub fn get_eff_personality(&self) -> BnumGroup {
         match &self.emotions {
-            Some((intensity, emotion)) => {
-                Manager::get_emotion_def(emotion).apply_to_personality(self.personality, *intensity)
-            }
+            Some((intensity, emotion)) => Manager::get_emotion_def(emotion)
+                .apply_to_personality(self.personality, *intensity),
             None => self.personality,
         }
     }
