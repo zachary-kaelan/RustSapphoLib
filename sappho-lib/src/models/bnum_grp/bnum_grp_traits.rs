@@ -1,5 +1,4 @@
 use crate::consts::BNUM_GROUP_SIZE;
-use crate::value_aliases::PERSONALITY_VALUE_ALIASES;
 use crate::{BNumber, BnumGroup};
 use std::convert::From;
 use std::fmt;
@@ -11,10 +10,7 @@ impl fmt::Display for BnumGroup {
             if i > 0 {
                 result.push_str(", ");
             }
-            result.push_str(&format!(
-                "{}: {:+.3}",
-                PERSONALITY_VALUE_ALIASES[i], self.values[i]
-            ));
+            result.push_str(&format!("{:+.3}", self.values[i]));
         }
         write!(f, "{}", result)
     }

@@ -1,8 +1,8 @@
-use crate::consts::{SparseBnumGroupT, BNUM_GROUP_SIZE};
+use crate::consts::BNUM_GROUP_SIZE;
 use crate::scripting::ast_def::{build_ast_from_definition, DefInnerAstNode};
 use crate::scripting::ast_expr::build_ast_from_expr;
-use crate::value_aliases::{get_value_aliases_from_type, ValueAliasType};
-use crate::{BNumber, SparseBNumber, SparseBnumGroup};
+use crate::value_aliases::{AliasType, Aliases};
+use crate::{BNumber, SparseBnumGroup};
 use pest::error::Error;
 use pest::Parser;
 use pest_derive::Parser;
@@ -112,13 +112,12 @@ pub fn parse(source: &str) -> Result<Vec<AstNode>, Error<Rule>> {
 
 pub fn extract_bnum_group_or_tuple(
     node: &Option<Box<AstNode>>,
-    value_type: ValueAliasType,
+    alias_type: AliasType,
 ) -> Result<SparseBnumGroup, super::error::Error> {
     match node {
         None => Ok(SparseBnumGroup::new(None)),
         Some(node) => match node.as_ref() {
             AstNode::BnumGroup(g) => {
-                let aliases = get_value_aliases_from_type(value_type);
                 let mut bnums: [Option<f32>; BNUM_GROUP_SIZE] = [None; BNUM_GROUP_SIZE];
                 for node in g {
                     match node {
@@ -130,8 +129,7 @@ pub fn extract_bnum_group_or_tuple(
                                     unreachable!()
                                 }
                             };
-                            let index = aliases.iter().position(|x1| x1 == ident);
-                            match index {
+                            match Aliases::get_index_for_alias(&alias_type, ident) {
                                 None => {
                                     return Err(super::error::Error::UnrecognizedBNumberAlias(
                                         ident.clone(),
@@ -164,13 +162,12 @@ pub fn extract_bnum_group_or_tuple(
 
 pub fn extract_weights_group_or_tuple(
     node: &Option<Box<AstNode>>,
-    value_type: ValueAliasType,
+    alias_type: AliasType,
 ) -> Result<Option<[Option<f32>; BNUM_GROUP_SIZE]>, super::error::Error> {
     match node {
         None => Ok(None),
         Some(node) => match node.as_ref() {
             AstNode::BnumWeightGroup(g) => {
-                let aliases = get_value_aliases_from_type(value_type);
                 let mut bnums: [Option<f32>; BNUM_GROUP_SIZE] = [None; BNUM_GROUP_SIZE];
                 for node in g {
                     match node {
@@ -182,8 +179,7 @@ pub fn extract_weights_group_or_tuple(
                                     unreachable!()
                                 }
                             };
-                            let index = aliases.iter().position(|x1| x1 == ident);
-                            match index {
+                            match Aliases::get_index_for_alias(&alias_type, ident) {
                                 None => {
                                     return Err(super::error::Error::UnrecognizedBNumberAlias(
                                         ident.clone(),

@@ -4,20 +4,20 @@ mod stage_manager;
 
 pub struct Manager;
 
+use crate::comps::EmotionDef;
+use crate::consts::BNUM_GROUP_SIZE;
+use crate::scripting::*;
+use crate::value_aliases::{AliasType, Aliases};
+use crate::{SparseBNumber, SparseBnumGroup};
 use std::collections::HashMap;
 use std::ops::Deref;
 use std::str;
-use crate::comps::{ActorState, EmotionDef};
-use crate::consts::BNUM_GROUP_SIZE;
-use crate::scripting::*;
-use crate::{SparseBNumber, SparseBnumGroup};
-use crate::value_aliases::{get_value_aliases_from_bnum_type, ValueAliasType};
 
 struct SparseActor {
     pub personality: SparseBnumGroup,
     pub accordance: SparseBnumGroup,
     pub self_perceptions: SparseBnumGroup,
-    pub perceptions: HashMap<String, SparseBnumGroup>
+    pub perceptions: HashMap<String, SparseBnumGroup>,
 }
 
 impl SparseActor {
@@ -26,13 +26,18 @@ impl SparseActor {
             personality: SparseBnumGroup::new(None),
             accordance: SparseBnumGroup::new(None),
             self_perceptions: SparseBnumGroup::new(None),
-            perceptions: HashMap::new()
+            perceptions: HashMap::new(),
         }
     }
 
     fn assign(&mut self, node: &AstNode) {
         match node {
-            AstNode::BnumTargetAssign { bnum_type, ident, target, expr } => {
+            AstNode::BnumTargetAssign {
+                bnum_type,
+                ident,
+                target,
+                expr,
+            } => {
                 let f = match expr.as_ref() {
                     AstNode::Float(f) => Some(*f),
                     AstNode::FloatOptional(f) => *f,
@@ -42,19 +47,21 @@ impl SparseActor {
                 };
 
                 let bnum_group = match bnum_type {
-                    BnumType::Accordance => { &mut self.accordance }
-                    BnumType::SelfPerception => { &mut self.self_perceptions }
-                    BnumType::Personality => { &mut self.personality }
+                    BnumType::Accordance => &mut self.accordance,
+                    BnumType::SelfPerception => &mut self.self_perceptions,
+                    BnumType::Personality => &mut self.personality,
                     BnumType::Perception => {
                         let target = target.get(0).expect("No target specified");
-                        self.perceptions.entry(target.clone()).or_insert(SparseBnumGroup::from([None; BNUM_GROUP_SIZE]))
+                        self.perceptions
+                            .entry(target.clone())
+                            .or_insert(SparseBnumGroup::from([None; BNUM_GROUP_SIZE]))
                     }
-                    BnumType::Circumstantial => { todo!() }
+                    BnumType::Circumstantial => {
+                        todo!()
+                    }
                 };
-                let aliases = get_value_aliases_from_bnum_type(bnum_type);
 
-                let index = aliases.iter().position(|x1| x1 == ident);
-                match index {
+                match Aliases::get_index_for_bnum_alias(bnum_type, ident) {
                     None => {
                         panic!("Alias {} not found", ident)
                     }
@@ -64,7 +71,7 @@ impl SparseActor {
                     }
                 }
             }
-            _ => unreachable!()
+            _ => unreachable!(),
         }
     }
 }
@@ -74,7 +81,7 @@ impl Manager {
         let dir = std::fs::read_dir(scripts_folder);
         let dir = match dir {
             Ok(d) => d,
-            Err(e) => panic!("{}", e)
+            Err(e) => panic!("{}", e),
         };
         let mut actor_display_names: HashMap<String, String> = HashMap::new();
         let mut actor_defs: HashMap<String, SparseActor> = HashMap::new();
@@ -84,16 +91,20 @@ impl Manager {
         for file in dir {
             let file = match file {
                 Ok(f) => f,
-                Err(_) => continue
+                Err(_) => continue,
             };
 
             match file.file_type() {
-                Ok(file_type) => { if !file_type.is_file() { continue } }
-                Err(_) => { continue }
+                Ok(file_type) => {
+                    if !file_type.is_file() {
+                        continue;
+                    }
+                }
+                Err(_) => continue,
             }
 
             if !file.file_name().to_str().unwrap().ends_with(".sappho") {
-                continue
+                continue;
             }
 
             let file_text = std::fs::read_to_string(file.path()).expect("Cannot read file");
@@ -101,47 +112,98 @@ impl Manager {
 
             for node in ast_nodes {
                 match node {
-                    AstNode::Def { ident, display_name, definition } => {
-                        match definition.deref() {
-                            DefInnerAstNode::ActorDef(def_ast) => {
-                                actor_display_names.insert(ident.clone(), display_name.into_string().unwrap());
-                                let mut sparse_actor = SparseActor::new();
+                    AstNode::Def {
+                        ident,
+                        display_name,
+                        definition,
+                    } => match definition.deref() {
+                        DefInnerAstNode::ActorDef(def_ast) => {
+                            actor_display_names
+                                .insert(ident.clone(), display_name.into_string().unwrap());
+                            let mut sparse_actor = SparseActor::new();
 
-                                for def_ast_node in def_ast {
-                                    match def_ast_node {
-                                        ActorAstNode::ActorGroup { bnum_type, target, group } => {
-                                            match bnum_type {
-                                                BnumType::Accordance => { sparse_actor.accordance = extract_bnum_group_or_tuple(&Some(group.clone()), ValueAliasType::Accordance).expect("Accordance failed"); }
-                                                BnumType::SelfPerception => { sparse_actor.self_perceptions = extract_bnum_group_or_tuple(&Some(group.clone()), ValueAliasType::Perception).expect("Perception failed"); }
-                                                BnumType::Personality => { sparse_actor.personality = extract_bnum_group_or_tuple(&Some(group.clone()), ValueAliasType::Personality).expect("Personality failed"); }
-                                                BnumType::Perception => {
-                                                    sparse_actor.perceptions.insert(target.get(0).unwrap().clone(),extract_bnum_group_or_tuple(&Some(group.clone()), ValueAliasType::Perception).expect("Perception failed") );
-                                                }
-                                                BnumType::Circumstantial => { todo!() }
-                                            }
+                            for def_ast_node in def_ast {
+                                match def_ast_node {
+                                    ActorAstNode::ActorGroup {
+                                        bnum_type,
+                                        target,
+                                        group,
+                                    } => match bnum_type {
+                                        BnumType::Accordance => {
+                                            sparse_actor.accordance = extract_bnum_group_or_tuple(
+                                                &Some(group.clone()),
+                                                AliasType::Accordance,
+                                            )
+                                            .expect("Accordance failed");
                                         }
-                                        ActorAstNode::BnumTargetAssign(assign) => { sparse_actor.assign(assign.as_ref()) }
+                                        BnumType::SelfPerception => {
+                                            sparse_actor.self_perceptions =
+                                                extract_bnum_group_or_tuple(
+                                                    &Some(group.clone()),
+                                                    AliasType::Perception,
+                                                )
+                                                .expect("Perception failed");
+                                        }
+                                        BnumType::Personality => {
+                                            sparse_actor.personality = extract_bnum_group_or_tuple(
+                                                &Some(group.clone()),
+                                                AliasType::Personality,
+                                            )
+                                            .expect("Personality failed");
+                                        }
+                                        BnumType::Perception => {
+                                            sparse_actor.perceptions.insert(
+                                                target.get(0).unwrap().clone(),
+                                                extract_bnum_group_or_tuple(
+                                                    &Some(group.clone()),
+                                                    AliasType::Perception,
+                                                )
+                                                .expect("Perception failed"),
+                                            );
+                                        }
+                                        BnumType::Circumstantial => {
+                                            todo!()
+                                        }
+                                    },
+                                    ActorAstNode::BnumTargetAssign(assign) => {
+                                        sparse_actor.assign(assign.as_ref())
                                     }
                                 }
+                            }
 
-                                actor_defs.insert(ident, sparse_actor);
-                            }
-                            DefInnerAstNode::EmotionDef(def_ast) => {
-                                let def_ast = def_ast.as_ref();
-                                let def = EmotionDef::new(
-                                    ident.clone(),
-                                    display_name.into_string().unwrap(),
-                                    extract_bnum_group_or_tuple(&def_ast.personality_modifiers, ValueAliasType::Personality).expect(&ident[..]),
-                                    extract_weights_group_or_tuple(&def_ast.personality_weights, ValueAliasType::Personality).expect(&ident[..]),
-                                    extract_bnum_group_or_tuple(&def_ast.perception_modifiers, ValueAliasType::Perception).expect(&ident[..]),
-                                    extract_weights_group_or_tuple(&def_ast.perception_weights, ValueAliasType::Perception).expect(&ident[..]),
-                                );
-                                emotion_defs.push(def);
-                            }
+                            actor_defs.insert(ident, sparse_actor);
                         }
-                    }
-                    AstNode::BnumTargetAssign { .. } => { assignments.push(node) }
-                    _ => panic!("Unexpected top level node {:?}", node)
+                        DefInnerAstNode::EmotionDef(def_ast) => {
+                            let def_ast = def_ast.as_ref();
+                            let def = EmotionDef::new(
+                                ident.clone(),
+                                display_name.into_string().unwrap(),
+                                extract_bnum_group_or_tuple(
+                                    &def_ast.personality_modifiers,
+                                    AliasType::Personality,
+                                )
+                                .expect(&ident[..]),
+                                extract_weights_group_or_tuple(
+                                    &def_ast.personality_weights,
+                                    AliasType::Personality,
+                                )
+                                .expect(&ident[..]),
+                                extract_bnum_group_or_tuple(
+                                    &def_ast.perception_modifiers,
+                                    AliasType::Perception,
+                                )
+                                .expect(&ident[..]),
+                                extract_weights_group_or_tuple(
+                                    &def_ast.perception_weights,
+                                    AliasType::Perception,
+                                )
+                                .expect(&ident[..]),
+                            );
+                            emotion_defs.push(def);
+                        }
+                    },
+                    AstNode::BnumTargetAssign { .. } => assignments.push(node),
+                    _ => panic!("Unexpected top level node {:?}", node),
                 }
             }
         }
@@ -152,19 +214,17 @@ impl Manager {
             println!("PERCEPTIONS");
             for (ident, perception) in &buddy.perceptions {
                 println!("{}: {}", ident, perception);
-            }   
+            }
         }
 
         println!("Scripts loaded");
     }
 }
 
-
-
 #[cfg(test)]
 mod tests {
-    use std;
     use crate::Manager;
+    use std;
 
     #[test]
     fn parse_test() {

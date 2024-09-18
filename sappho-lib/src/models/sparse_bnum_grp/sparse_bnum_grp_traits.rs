@@ -1,5 +1,4 @@
 use crate::consts::BNUM_GROUP_SIZE;
-use crate::value_aliases::PERSONALITY_VALUE_ALIASES;
 use crate::{SparseBNumber, SparseBnumGroup};
 use std::convert::From;
 use std::fmt;
@@ -21,10 +20,7 @@ impl fmt::Display for SparseBnumGroup {
                             if has_value {
                                 result.push_str(", ");
                             }
-                            result.push_str(&format!(
-                                "{}: {:+.3}",
-                                PERSONALITY_VALUE_ALIASES[i], value
-                            ));
+                            result.push_str(&format!("{:+.3}", value));
                             has_value = true;
                         }
                     }
