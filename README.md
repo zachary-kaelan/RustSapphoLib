@@ -8,7 +8,7 @@
 
 ### Bad_Good
 
-This scale reflects a character’s moral alignment: how nasty or nice they are.
+This scale reflects a characterâ€™s moral alignment: how nasty or nice they are.
 
  - **Bad**: The character is malevolent, selfish, or destructive, and tends to act with harmful intentions.
  - **Good**: The character is benevolent, altruistic, and aims to do good or act in the best interest of others.
@@ -28,7 +28,7 @@ This scale measures a character's trustworthiness and integrity.
 
 ### Timid_Dominant
 
-This trait relates to the character’s assertiveness and confidence in social dynamics.
+This trait relates to the characterâ€™s assertiveness and confidence in social dynamics.
 
  - **Timid**: The character is passive, shy, or easily intimidated, often avoiding confrontation or assertive actions.
  - **Dominant**: The character is confident, assertive, and may take control or lead in situations, often comfortable with exerting power.
@@ -112,24 +112,24 @@ One's perception of the world's level of Ascetic_Hedonistic, particularly in rel
 
 ### Selfish_Altruistic
 
-This trait reflects whether the action is motivated by the benefit of others or self-interest. Altruistic verbs (e.g., "help," "sacrifice") focus on others’ well-being, while Selfish verbs (e.g., "hoard," "exploit") focus on personal gain.
+This trait reflects whether the action is motivated by the benefit of others or self-interest. Altruistic verbs (e.g., "help", "sacrifice") focus on othersâ€™ well-being, while Selfish verbs (e.g., "hoard", "exploit") focus on personal gain.
 
 ***
 
 ### Deceptive_Sincere
 
-This would reflect whether the action is manipulative or transparent. Verbs like "mislead" or "lie" would be Deceptive, while "confess" or "promise" would be Sincere.
+This would reflect whether the action is manipulative or transparent. Deceptive verbs (e.g., "mislead", "lie") intentionally spread misinformation, while Sincere verbs (e.g., "confess", "promise") clearly convey the known state of reality.
 
 ***
 
 ### Submissive_Dominant
 
-This trait reflects the power dynamic in the action. Dominant actions (e.g., "order," "enforce") impose the will of the actor, while Submissive actions (e.g., "obey," "yield") reflect yielding to others.
+This trait reflects the power dynamic in the action. Dominant actions (e.g., "order", "enforce") impose the will of the actor, while Submissive verbs (e.g., "obey", "yield") reflect yielding to others.
 
 ***
 
 ### Cold_Emotional
 
-This measures the emotional tone or passion behind the action. Emotional actions (e.g., "weep," "shout") are driven by strong feelings, while Cold actions (e.g., "calculate," "ignore") are detached and unemotional.
+This measures the emotional tone or passion behind the action. Emotional actions (e.g., "weep", "shout") are driven by strong feelings, while Cold verbs (e.g., "calculate", "ignore") are detached and unemotional.
 
 ***
