@@ -51,6 +51,24 @@ emotion_perception_modifiers = { "PERCEPTION_MODS" ~ bnum_group }
 emotion_personality_weights = { "PERSONALITY_WEIGHTS" ~ bnum_weight_group }
 emotion_perception_weights = { "PERCEPTION_WEIGHTS" ~ bnum_weight_group }
 
+verb_def_inner = { verb_def_block ~ ("," ~ verb_def_block)* }
+verb_def_block = { verb_inclination_block | verb_impact_block | verb_intent_block }
+
+verb_inclination_block = { "INCLINATION" ~ "{" ~ verb_inclination_block_inner ~ "}" }
+verb_inclination_block_inner = { verb_inclination_stmt ~ ("," ~ verb_inclination_stmt)* }
+verb_inclination_stmt = { verb_inclination_personality_weights | verb_inclination_perception_weights | verb_inclination_circumstantial_weights }
+verb_inclination_personality_weights = { "PERSONALITY_WEIGHTS" ~ bnum_weight_group }
+verb_inclination_perception_weights = { "PERCEPTION_WEIGHTS" ~ verb_target ~ bnum_weight_group }
+verb_inclination_circumstantial_weights = { "CIRCUMSTANTIAL_WEIGHTS" ~ verb_target ~ verb_target ~ bnum_weight_group }
+
+verb_impact_block = { "IMPACT" ~ verb_target ~ verb_target }
+
+verb_intent_block = { "INTENT" }
+verb_intent_type = { "EXPRESS" | "ASK" | "INFORM" | "MISINFORM" }
+
+verb_placeholder = { "SELF" | "TARGET" | "ACCORDANCE" | "SUBJECT" | "WITNESS" }
+verb_target = @{ "[@" ~ verb_placeholder ~ "]" }
+
 bnum_group_or_tuple = _{ bnum_group | bnum_tuple }
 bnum_group = { "{" ~ (bnum_assign ~ ("," ~ bnum_assign)*)? ~ "}" }
 bnum_weight_group = { "{" ~ (bnum_weight ~ ("," ~ bnum_weight)*)? ~ "}" }
